@@ -1,5 +1,5 @@
 import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
-import { IsEmail, IsDate, IsNotEmpty } from 'class-validator';
+import { IsEmail, IsNotEmpty } from 'class-validator';
 
 @Entity('Users') // Specify the exact name of the table in the database
 export class User {
@@ -13,7 +13,11 @@ export class User {
 	@Column()
 	firstname: string;
 
-	@Column()
+	// loginMethodCode: COGNITO_PASSWORD | google | facebook | gh
+
+	@Column({
+		nullable: true,
+	})
 	lastname: string;
 
 	@Column()
@@ -29,11 +33,6 @@ export class User {
 	@Column()
 	status: string;
 
-	@Column()
-	@IsDate() // Ensure the correct type
+	@Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
 	createdat: Date;
-
-	@Column()
-	@IsDate()
-	updatedat: Date;
 }
