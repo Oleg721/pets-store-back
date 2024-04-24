@@ -10,7 +10,7 @@ const defaultOptions = {
 	type: process.env.DB_TYPE || 'postgres',
 	port: process.env.DB_PORT || '5432',
 	username: process.env.DB_USERNAME || 'postgres',
-	password: process.env.DB_PASSWORD || 'Flo1lilly95', // on purpose, store sensitive data is insecure even if it's a default
+	password: process.env.DB_PASSWORD || '',
 	database: process.env.DB_NAME || 'pets-db',
 	autoLoadEntities: true, // to automatically load entities
 	synchronize: true, // shouldn't be used in production - otherwise we can lose production data.
