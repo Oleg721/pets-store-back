@@ -4,6 +4,7 @@ import { DataSource, Repository } from 'typeorm';
 import * as bcrypt from 'bcryptjs';
 
 import { User } from '../entities/user.entity';
+import { RegisterDto } from 'src/auth/dto/auth.dto';
 
 @Injectable()
 export class UsersService {
@@ -41,29 +42,29 @@ export class UsersService {
 	}
 
 	// Create a new user
-	async createUser(userData: User): Promise<User> {
-		if (!userData.email) {
+	async createUser(dto: RegisterDto): Promise<User> {
+		if (!dto.email) {
 			throw new BadRequestException(`No email address is provided!`);
 		}
 
 		const oldUser = await this.userRepository.findOneBy({
-			email: userData.email,
+			email: dto.email,
 		});
 
 		if (oldUser) {
 			throw new BadRequestException(
-				`User with the email ${userData.email} already exists!`
+				`User with the email ${dto.email} already exists!`
 			);
 		}
 
 		const salt = await bcrypt.genSalt(10);
 
 		const newUser = {
-			email: userData.email,
-			username: userData.username,
-			firstname: userData.firstname,
-			lastname: userData.lastname,
-			hashedpassword: await bcrypt.hash(userData.hashedpassword, salt),
+			email: dto.email,
+			username: dto.username,
+			firstname: dto.firstname,
+			lastname: dto.lastname,
+			hashedpassword: await bcrypt.hash(dto.hashedpassword, salt),
 			role: 'user',
 			status: 'active',
 		};

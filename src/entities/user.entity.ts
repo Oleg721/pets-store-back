@@ -13,7 +13,11 @@ export class User {
 	@Column()
 	firstname: string;
 
-	@Column()
+	// loginMethodCode: COGNITO_PASSWORD | google | facebook | gh
+
+	@Column({
+		nullable: true,
+	})
 	lastname: string;
 
 	@Column()
@@ -29,11 +33,6 @@ export class User {
 	@Column()
 	status: string;
 
-	@Column()
-	@IsDate() // Ensure the correct type
+	@Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
 	createdat: Date;
-
-	@Column()
-	@IsDate()
-	updatedat: Date;
 }
