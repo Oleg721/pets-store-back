@@ -30,6 +30,16 @@ export class UsersService {
 		return user;
 	}
 
+	async getUserByEmail (email: string): Promise<User> {
+		const user = this.userRepository.findOneBy({ email });
+
+		if (!user) {
+			throw new NotFoundException(`User with email ${email} not found`);
+		}
+
+		return user;
+	}
+
 	// Update user by ID
 	async updateUserById(id: number, data: Partial<User>): Promise<User> {
 		const user = await this.userRepository.findOneBy({ id });
