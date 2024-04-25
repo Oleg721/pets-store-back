@@ -2,10 +2,11 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 
+import configuration from './config/configuration';
+import { AuthModule } from './auth/auth.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UsersModule } from './user/users.module';
-import configuration from './config/configuration';
 import { User } from './entities/user.entity';
 import { AttributeName } from './entities/attributeName.entity';
 import { Category } from './entities/category.entity';
@@ -41,6 +42,7 @@ import { CategoryAttribute } from './entities/categoryAttribute.entity';
 			inject: [ConfigService],
 		}),
 		UsersModule,
+		AuthModule,
 	],
 	controllers: [AppController],
 	providers: [AppService],
