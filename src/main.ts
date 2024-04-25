@@ -3,7 +3,11 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 import { AppModule } from './app.module';
 
-const URL_PREFIX = 'api/v1';
+const protocol = process.env.PROTOCOL || 'http';
+const host = process.env.API_HOST || 'localhost';
+const port = process.env.PORT || 3000;
+const apiVersion = process.env.API_PREFIX || 'api/v1';
+const url = `${protocol}://${host}:${port}/${apiVersion}`;
 
 async function bootstrap() {
 	const app = await NestFactory.create(AppModule);
@@ -16,18 +20,18 @@ async function bootstrap() {
 		.setTitle('Pets store example')
 		.setDescription('The pats API description')
 		.setVersion('1.0')
-		.addServer(process.env.API_URL)
+		.addServer(url)
 		.addTag('pets')
 		.build();
 
 	const document = SwaggerModule.createDocument(app, config);
-	SwaggerModule.setup(URL_PREFIX, app, document);
+	SwaggerModule.setup(apiVersion, app, document);
 
-	app.setGlobalPrefix(URL_PREFIX);
+	app.setGlobalPrefix(apiVersion);
 
 	app.enableCors();
 	({
-		origin: [process.env.API_URL],
+		origin: [url],
 		allowedHeaders: [
 			'Accept',
 			'Content-Type',
@@ -41,6 +45,6 @@ async function bootstrap() {
 		],
 	});
 
-	await app.listen(process.env.PORT);
+	await app.listen(port);
 }
 bootstrap();
