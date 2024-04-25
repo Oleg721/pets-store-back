@@ -6,6 +6,12 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UsersModule } from './user/users.module';
 import configuration from './config/configuration';
+import { User } from './entities/user.entity';
+import { AttributeName } from './entities/attributeName.entity';
+import { Category } from './entities/category.entity';
+import { ProductAttributeName } from './entities/productAttributeName.entity';
+import { Product } from './entities/product.entity';
+import { CategoryAttribute } from './entities/categoryAttribute.entity';
 
 @Module({
 	imports: [
@@ -26,8 +32,10 @@ import configuration from './config/configuration';
 					password: configService.get<string>('database.password'),
 					database: configService.get<string>('database.database'),
 					synchronize: true, // shouldn't be used in production - otherwise we can lose production data.
-					autoLoadEntities: true, // to automatically load entities
-					// entities: [User],
+					autoLoadEntities: true, // to automatically load entities,
+					logging: true,
+
+					entities: [User, AttributeName, CategoryAttribute, Category, ProductAttributeName, Product],
 				};
 			},
 			inject: [ConfigService],
