@@ -1,6 +1,10 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { DataSource, Repository } from 'typeorm';
+import {
+	BadRequestException,
+	Inject,
+	Injectable,
+	NotFoundException,
+} from '@nestjs/common';
+import { Repository } from 'typeorm';
 import * as bcrypt from 'bcryptjs';
 
 import { User } from '../entities/user.entity';
@@ -9,11 +13,10 @@ import { RegisterDto } from 'src/auth/dto/auth.dto';
 @Injectable()
 export class UsersService {
 	constructor(
-		@InjectRepository(User)
-		private userRepository: Repository<User>,
+		@Inject('userRepository')
+		private userRepository: Repository<User>
 		// There are many different strategies to handle TypeORM transactions.
 		// We recommend using the QueryRunner class because it gives full control over the transaction.
-		private dataSource: DataSource
 	) {}
 
 	// Get all users
@@ -30,7 +33,7 @@ export class UsersService {
 		return user;
 	}
 
-	async getUserByEmail (email: string): Promise<User> {
+	async getUserByEmail(email: string): Promise<User> {
 		const user = this.userRepository.findOneBy({ email });
 
 		if (!user) {

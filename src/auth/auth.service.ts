@@ -5,8 +5,6 @@ import {
 	UnauthorizedException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
 import { ConfigService } from '@nestjs/config';
 import * as bcryptjs from 'bcryptjs';
 
@@ -17,15 +15,14 @@ import { LoginDto, RegisterDto } from './dto/auth.dto';
 @Injectable()
 export class AuthService {
 	constructor(
-		@InjectRepository(User)
 		private jwtService: JwtService,
 		private config: ConfigService,
-		private userService: UsersService,
+		private userService: UsersService
 	) {}
 
 	async login(dto: LoginDto) {
 		if (!dto.email || !dto.hashedpassword) {
-			throw new UnauthorizedException('Invalid data provided')
+			throw new UnauthorizedException('Invalid data provided');
 		}
 
 		const user = await this.validateUser(dto);
@@ -78,7 +75,9 @@ export class AuthService {
 		const existingUser = await this.userService.getUserByEmail(dto.email);
 
 		if (existingUser) {
-			throw new BadRequestException(`User with email ${dto.email} already exists`);
+			throw new BadRequestException(
+				`User with email ${dto.email} already exists`
+			);
 		}
 
 		const newUser = await this.userService.createUser(dto);

@@ -1,14 +1,13 @@
 import { Module } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { UsersService } from './users.service';
 import { UsersController } from './users.controller';
-import { User } from '../entities/user.entity';
+import { DatabaseModule } from 'src/database/database.module';
 
 @Module({
-	imports: [TypeOrmModule.forFeature([User])],
-	exports: [TypeOrmModule], // to use the repository outside of the module
+	imports: [DatabaseModule],
 	controllers: [UsersController],
 	providers: [UsersService],
+	exports: [UsersService],
 })
 export class UsersModule {}
