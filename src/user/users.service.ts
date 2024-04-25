@@ -7,13 +7,13 @@ import {
 import { Repository } from 'typeorm';
 import * as bcrypt from 'bcryptjs';
 
-import { User } from '../entities/user.entity';
+import { User } from '../entities';
 import { RegisterDto } from 'src/auth/dto/auth.dto';
 
 @Injectable()
 export class UsersService {
 	constructor(
-		@Inject('userRepository')
+		@Inject(User)
 		private userRepository: Repository<User>
 		// There are many different strategies to handle TypeORM transactions.
 		// We recommend using the QueryRunner class because it gives full control over the transaction.

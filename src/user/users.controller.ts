@@ -5,11 +5,11 @@ import {
 	Body,
 	Delete,
 	Param,
-	Patch,
 	Put,
 } from '@nestjs/common';
+
 import { UsersService } from './users.service';
-import { User } from '../entities/user.entity';
+import { User } from '../entities';
 
 @Controller('users')
 export class UsersController {

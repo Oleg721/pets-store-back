@@ -1,10 +1,9 @@
 import { DataSource } from 'typeorm';
-import { User } from './user.entity';
 
-export const EntityProviders = [
-	{
-		provide: 'userRepository',
-		useFactory: (dataSource: DataSource) => dataSource.getRepository(User),
-		inject: ['dataSource'],
-	},
-];
+import * as entities from './index';
+
+export const EntityProviders = Object.values(entities).map((Entity) => ({
+	provide: Entity,
+	useFactory: (dataSource: DataSource) => dataSource.getRepository(Entity),
+	inject: ['dataSource'],
+}));
