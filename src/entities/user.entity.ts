@@ -22,6 +22,7 @@ export class User {
 
 	@Column()
 	@IsEmail() // Validate that 'email' contains a valid email address
+	@IsNotEmpty()
 	email: string;
 
 	@Column()

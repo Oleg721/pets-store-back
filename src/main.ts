@@ -1,4 +1,5 @@
 import { NestFactory } from '@nestjs/core';
+import { ValidationPipe } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 import { AppModule } from './app.module';
@@ -27,6 +28,7 @@ async function bootstrap() {
 	const document = SwaggerModule.createDocument(app, config);
 	SwaggerModule.setup(apiVersion, app, document);
 
+	app.useGlobalPipes(new ValidationPipe());
 	app.setGlobalPrefix(apiVersion);
 
 	app.enableCors();

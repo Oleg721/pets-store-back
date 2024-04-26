@@ -1,7 +1,8 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post, UsePipes } from '@nestjs/common';
 
 import { AuthService } from './auth.service';
 import { LoginDto, RegisterDto } from './dto/auth.dto';
+import { UniqueEmailPipe } from 'src/pipes/UniqueEmail.pipe';
 
 @Controller('auth')
 export class AuthController {
@@ -13,6 +14,7 @@ export class AuthController {
 	}
 
   @Post('register')
+	@UsePipes(UniqueEmailPipe)
   async register(@Body() dto: RegisterDto) {
     return this.authService.register(dto);
   }

@@ -1,30 +1,26 @@
 import {
-	BadRequestException,
 	Injectable,
 	NotFoundException,
 	UnauthorizedException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
-import * as bcryptjs from 'bcryptjs';
 
 import { User } from 'src/entities';
 import { UsersService } from 'src/user/users.service';
+import { SecurityService } from 'src/security/security.service';
 import { LoginDto, RegisterDto } from './dto/auth.dto';
 
 @Injectable()
 export class AuthService {
 	constructor(
-		private jwtService: JwtService,
-		private config: ConfigService,
-		private userService: UsersService
+		private readonly jwtService: JwtService,
+		private readonly config: ConfigService,
+		private readonly userService: UsersService,
+		private readonly securityService: SecurityService,
 	) {}
 
 	async login(dto: LoginDto) {
-		if (!dto.email || !dto.hashedpassword) {
-			throw new UnauthorizedException('Invalid data provided');
-		}
-
 		const user = await this.validateUser(dto);
 
 		const tokens = await this.generateTokenPair(user);
@@ -49,18 +45,14 @@ export class AuthService {
 	}
 
 	async validateUser(dto: LoginDto): Promise<any> {
-		if (!dto.email || !dto.hashedpassword) {
-			throw new NotFoundException(`One of the field is missed`);
-		}
-
 		const user = await this.userService.getUserByEmail(dto.email);
 
 		if (!user) {
 			throw new NotFoundException(`User with email ${dto.email} not found`);
 		}
 
-		const isValidPassword = await bcryptjs.compare(
-			dto.hashedpassword,
+		const isValidPassword = await this.securityService.compareData(
+			dto.password,
 			user.hashedpassword
 		);
 
@@ -72,15 +64,19 @@ export class AuthService {
 	}
 
 	async register(dto: RegisterDto) {
-		const existingUser = await this.userService.getUserByEmail(dto.email);
+		const hash = await this.securityService.hashData(dto.password);
 
-		if (existingUser) {
-			throw new BadRequestException(
-				`User with email ${dto.email} already exists`
-			);
-		}
+		const data = {
+			email: dto.email,
+			username: dto.username,
+			firstname: dto.firstname,
+			lastname: dto.lastname,
+			hashedpassword: hash,
+			role: 'user',
+			status: 'active',
+		};
 
-		const newUser = await this.userService.createUser(dto);
+		const newUser = await this.userService.createUser(data);
 
 		const tokens = await this.generateTokenPair(newUser);
 

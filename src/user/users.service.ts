@@ -1,14 +1,7 @@
-import {
-	BadRequestException,
-	Inject,
-	Injectable,
-	NotFoundException,
-} from '@nestjs/common';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { Repository } from 'typeorm';
-import * as bcrypt from 'bcryptjs';
 
 import { User } from '../entities';
-import { RegisterDto } from 'src/auth/dto/auth.dto';
 
 @Injectable()
 export class UsersService {
@@ -55,34 +48,8 @@ export class UsersService {
 	}
 
 	// Create a new user
-	async createUser(dto: RegisterDto): Promise<User> {
-		if (!dto.email) {
-			throw new BadRequestException(`No email address is provided!`);
-		}
-
-		const oldUser = await this.userRepository.findOneBy({
-			email: dto.email,
-		});
-
-		if (oldUser) {
-			throw new BadRequestException(
-				`User with the email ${dto.email} already exists!`
-			);
-		}
-
-		const salt = await bcrypt.genSalt(10);
-
-		const newUser = {
-			email: dto.email,
-			username: dto.username,
-			firstname: dto.firstname,
-			lastname: dto.lastname,
-			hashedpassword: await bcrypt.hash(dto.hashedpassword, salt),
-			role: 'user',
-			status: 'active',
-		};
-
-		return await this.userRepository.save(newUser);
+	async createUser(user: Partial<User>): Promise<User> {
+		return await this.userRepository.save(user);
 	}
 
 	// Delete user by ID
