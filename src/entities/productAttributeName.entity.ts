@@ -6,8 +6,8 @@ import { Product } from './product.entity';
 
 @Entity('ProductAttributeNames')
 export class ProductAttributeName extends BaseEntity {
-    @Column()
-    value: string
+	@Column()
+	value: string;
 
 	@ManyToOne(() => CategoryAttribute, (categoryAttribute) => categoryAttribute.productAttributeNames)
 	categoryAttribute: CategoryAttribute;
