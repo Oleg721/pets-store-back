@@ -35,11 +35,6 @@ export class UsersController {
 		return await this.usersService.updateUserById(id, data);
 	}
 
-	@Post()
-	async createUser(@Body() data: User): Promise<User> {
-		return await this.usersService.createUser(data);
-	}
-
 	@Delete(':id')
 	async deleteUserById(@Param('id') id: number): Promise<void> {
 		return await this.usersService.deleteUserById(id);
