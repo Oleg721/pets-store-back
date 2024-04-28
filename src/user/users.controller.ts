@@ -10,19 +10,20 @@ import {
 
 import { UsersService } from './users.service';
 import { User } from '../entities';
+import { UserDto } from './dto/user.dto';
 
 @Controller('users')
 export class UsersController {
 	constructor(private readonly usersService: UsersService) {}
 
 	@Get() // /users
-	async getAllUsers(): Promise<User[]> {
+	async getAllUsers(): Promise<UserDto[]> {
 		console.log('controller getAllUsers');
 		return this.usersService.getAllUsers();
 	}
 
 	@Get(':id') // /users/:id
-	async getUserById(@Param('id') id: number): Promise<User | null> {
+	async getUserById(@Param('id') id: number): Promise<UserDto | null> {
 		return await this.usersService.getUserById(id);
 	}
 
@@ -30,7 +31,7 @@ export class UsersController {
 	async updateUserById(
 		@Param('id') id: number,
 		@Body() data: Partial<User>
-	): Promise<User> {
+	): Promise<UserDto> {
 		return await this.usersService.updateUserById(id, data);
 	}
 

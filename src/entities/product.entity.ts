@@ -6,8 +6,9 @@ import { ProductAttributeName } from './productAttributeName.entity';
 
 export enum ProductStatus {
     AVAILABLE = "available",
-    PENDING = "pending",
+    RESERVED = "reserved", // don't show to the user
     SOLD = "sold",
+    MODERATING = 'moderating',
 }
 
 @Entity('Products')

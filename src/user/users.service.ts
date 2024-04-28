@@ -1,7 +1,9 @@
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
+// Future improvements: create own Repository that will use typeorm repo inside
 import { Repository } from 'typeorm';
 
 import { User } from '../entities';
+import { UserDto } from './dto/user.dto';
 
 @Injectable()
 export class UsersService {
@@ -12,18 +14,24 @@ export class UsersService {
 		// We recommend using the QueryRunner class because it gives full control over the transaction.
 	) {}
 
+	private toUserDto(user: User): UserDto {
+    const { hashedpassword, ...rest } = user;
+    return { ...rest };
+  }
+
 	// Get all users
-	async getAllUsers(): Promise<User[]> {
-		return await this.userRepository.find();
+	async getAllUsers(): Promise<UserDto[]> {
+		const users = await this.userRepository.find();
+		return users.map(this.toUserDto);
 	}
 
 	// Get user by ID
-	async getUserById(id: number): Promise<User> {
+	async getUserById(id: number): Promise<UserDto> {
 		const user = await this.userRepository.findOneBy({ id });
 
 		if (!user) throw new NotFoundException(`User with ID ${id} not found`);
 
-		return user;
+		return this.toUserDto(user);
 	}
 
 	async getUserByEmail(email: string): Promise<User> {
@@ -37,14 +45,15 @@ export class UsersService {
 	}
 
 	// Update user by ID
-	async updateUserById(id: number, data: Partial<User>): Promise<User> {
+	async updateUserById(id: number, data: Partial<User>): Promise<UserDto> {
 		const user = await this.userRepository.findOneBy({ id });
 
 		if (!user) {
 			throw new NotFoundException(`User with ID ${id} not found`);
 		}
 
-		return await this.userRepository.save({ ...user, ...data });
+		const updatedUser = await this.userRepository.save({ ...user, ...data });
+		return this.toUserDto(updatedUser);
 	}
 
 	// Create a new user
