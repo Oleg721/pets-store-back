@@ -1,4 +1,4 @@
-import { Entity, Column, ManyToOne, OneToMany } from 'typeorm';
+import { Entity, Column, ManyToOne, OneToMany, JoinTable } from 'typeorm';
 
 import { BaseEntity } from './base.entity';
 import { Category } from './category.entity';
@@ -31,6 +31,9 @@ export class Product extends BaseEntity {
     @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
     createdat: Date;
 
+    @Column()
+    categoryId: number
+
     @ManyToOne(() => Category, (category) => category.products, {
         onDelete: "CASCADE",
         cascade: ["update"]
@@ -39,4 +42,7 @@ export class Product extends BaseEntity {
 
     @OneToMany(() => ProductAttributeName, (productAttributeName) => productAttributeName.product)
     productAttributeName: ProductAttributeName[]
+
+    // @JoinTable()
+    // categories: Category[]
 }
