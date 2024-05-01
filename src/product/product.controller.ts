@@ -7,15 +7,17 @@ import {
 	Param,
 	Patch,
 	Post,
-	Query,
+	Query
 } from '@nestjs/common';
 
 import { ProductService } from './product.service';
 import { ProductViewDto } from './dto/productView.dto';
 import { ProductMapperProvider } from './productMapper.provider';
 import { CreateProductDto } from './dto/create-product.dto';
+import { ApiTags } from '@nestjs/swagger';
 
-@Controller('product')
+@ApiTags('products')
+@Controller('products')
 export class ProductController {
 	constructor(
 		private readonly productService: ProductService,

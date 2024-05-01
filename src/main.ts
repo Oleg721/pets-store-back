@@ -22,7 +22,6 @@ async function bootstrap() {
 		.setDescription('The pats API description')
 		.setVersion('1.0')
 		.addServer(url)
-		.addTag('pets')
 		.build();
 
 	const document = SwaggerModule.createDocument(app, config);

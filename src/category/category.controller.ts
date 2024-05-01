@@ -12,8 +12,10 @@ import { CategoryService } from './category.service';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
 import { ProductMapperProvider } from './categoryMapper.provider';
+import { ApiTags } from '@nestjs/swagger';
 
-@Controller('category')
+@ApiTags('categories')
+@Controller('categories')
 export class CategoryController {
 	constructor(
 		private readonly categoryService: CategoryService,
