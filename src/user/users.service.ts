@@ -1,14 +1,9 @@
-import {
-	BadRequestException,
-	Inject,
-	Injectable,
-	NotFoundException,
-} from '@nestjs/common';
+import { BadRequestException, Inject, Injectable, NotFoundException } from '@nestjs/common';
+// Future improvements: create own Repository that will use typeorm repo inside
 import { Repository } from 'typeorm';
-import * as bcrypt from 'bcryptjs';
 
 import { User } from '../entities';
-import { RegisterDto } from 'src/auth/dto/auth.dto';
+import { UserDto } from './dto/user.dto';
 
 @Injectable()
 export class UsersService {
@@ -19,18 +14,24 @@ export class UsersService {
 		// We recommend using the QueryRunner class because it gives full control over the transaction.
 	) {}
 
+	private toUserDto(user: User): UserDto {
+    const { hashedpassword, ...rest } = user;
+    return { ...rest };
+  }
+
 	// Get all users
-	async getAllUsers(): Promise<User[]> {
-		return await this.userRepository.find();
+	async getAllUsers(): Promise<UserDto[]> {
+		const users = await this.userRepository.find();
+		return users.map(this.toUserDto);
 	}
 
 	// Get user by ID
-	async getUserById(id: number): Promise<User> {
+	async getUserById(id: number): Promise<UserDto> {
 		const user = await this.userRepository.findOneBy({ id });
 
 		if (!user) throw new NotFoundException(`User with ID ${id} not found`);
 
-		return user;
+		return this.toUserDto(user);
 	}
 
 	async getUserByEmail(email: string): Promise<User> {
@@ -44,45 +45,26 @@ export class UsersService {
 	}
 
 	// Update user by ID
-	async updateUserById(id: number, data: Partial<User>): Promise<User> {
+	async updateUserById(id: number, data: Partial<User>): Promise<UserDto> {
 		const user = await this.userRepository.findOneBy({ id });
 
 		if (!user) {
 			throw new NotFoundException(`User with ID ${id} not found`);
 		}
 
-		return await this.userRepository.save({ ...user, ...data });
+		const updatedUser = await this.userRepository.save({ ...user, ...data });
+		return this.toUserDto(updatedUser);
 	}
 
 	// Create a new user
-	async createUser(dto: RegisterDto): Promise<User> {
-		if (!dto.email) {
-			throw new BadRequestException(`No email address is provided!`);
-		}
-
-		const oldUser = await this.userRepository.findOneBy({
-			email: dto.email,
-		});
+	async createUser(user: Partial<User>): Promise<User> {
+		const oldUser = await this.getUserByEmail(user.email);
 
 		if (oldUser) {
-			throw new BadRequestException(
-				`User with the email ${dto.email} already exists!`
-			);
+			throw new BadRequestException(`User with the email ${user.email} already exists!`);
 		}
 
-		const salt = await bcrypt.genSalt(10);
-
-		const newUser = {
-			email: dto.email,
-			username: dto.username,
-			firstname: dto.firstname,
-			lastname: dto.lastname,
-			hashedpassword: await bcrypt.hash(dto.hashedpassword, salt),
-			role: 'user',
-			status: 'active',
-		};
-
-		return await this.userRepository.save(newUser);
+		return await this.userRepository.save(user);
 	}
 
 	// Delete user by ID

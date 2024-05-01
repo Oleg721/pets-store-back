@@ -1,4 +1,5 @@
 import { NestFactory } from '@nestjs/core';
+import { ValidationPipe } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 import { AppModule } from './app.module';
@@ -27,6 +28,14 @@ async function bootstrap() {
 	const document = SwaggerModule.createDocument(app, config);
 	SwaggerModule.setup(apiVersion, app, document);
 
+	// app use global pipes to automatically validate requests 
+	// from entity itself such as:
+	/*
+		@MinLength(6, { message: 'Password cannot be less then 6 characters' })
+		@IsString()
+		password: string;
+	*/
+	app.useGlobalPipes(new ValidationPipe());
 	app.setGlobalPrefix(apiVersion);
 
 	app.enableCors();

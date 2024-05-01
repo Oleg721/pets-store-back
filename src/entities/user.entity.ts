@@ -1,6 +1,13 @@
 import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 import { IsEmail, IsNotEmpty } from 'class-validator';
 
+export enum Role {
+	MERCHANT = 'merchant',
+	USER = 'user',
+	ADMIN = 'admin',
+	MODERATOR = 'moderator',
+}
+
 @Entity('Users') // Specify the exact name of the table in the database
 export class User {
 	@PrimaryGeneratedColumn()
@@ -22,6 +29,7 @@ export class User {
 
 	@Column()
 	@IsEmail() // Validate that 'email' contains a valid email address
+	@IsNotEmpty()
 	email: string;
 
 	@Column()
