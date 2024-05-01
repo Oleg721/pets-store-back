@@ -1,19 +1,19 @@
 import { ApiProperty } from '@nestjs/swagger';
-
 import { ProductStatus } from 'src/entities/product.entity';
 
-export class ProductViewDto {
+export class CreateProductDto {
+    @ApiProperty()
 	name: string;
 
+    @ApiProperty()
 	description: string;
 
+    @ApiProperty()
 	status: ProductStatus;
 
+    @ApiProperty()
 	price: number;
-
-	createdat: Date;
-
+    
+    @ApiProperty()
 	categoryId: number;
-
-	productAttributes?: { [key: string]: string | number | Date };
 }

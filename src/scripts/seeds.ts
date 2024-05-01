@@ -146,7 +146,7 @@ async function seedTableData() {
 				existingProduct = productsRepo.create({
 					name: data.name,
 					description: data.description,
-					price: String(data.price),
+					price: data.price,
 				});
 			} else {
 				existingProduct.description = data.description;
