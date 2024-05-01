@@ -14,7 +14,7 @@ export class CategoryAttribute extends BaseEntity {
 		() => AttributeName,
 		(attributeName) => attributeName.categoryAttributes
 	)
-	attributeName: Category;
+	attributeName: AttributeName;
 
     @OneToMany(() => ProductAttributeName, (pan) => pan.categoryAttribute)
     productAttributeNames: ProductAttributeName[]

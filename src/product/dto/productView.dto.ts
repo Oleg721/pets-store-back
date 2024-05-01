@@ -1,5 +1,3 @@
-import { ApiProperty } from '@nestjs/swagger';
-
 import { ProductStatus } from 'src/entities/product.entity';
 
 export class ProductViewDto {

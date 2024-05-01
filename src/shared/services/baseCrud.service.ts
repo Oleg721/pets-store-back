@@ -11,12 +11,12 @@ export abstract class BaseCrudService<
 	constructor(private _repository: Repository<TEntity>) {}
 
 	async create(createDto: TCreateDto) {
-		this.onBeforeCreate();
-		return await this._repository.save(createDto);
+		await this.onBeforeCreate();
+		return this._repository.save(createDto);
 	}
 
 	async findAll(): Promise<TEntity[]> {
-		return await this._repository.find();
+		return this._repository.find();
 	}
 
 	async findOne(id: number): Promise<TEntity> {
@@ -38,7 +38,7 @@ export abstract class BaseCrudService<
 			throw new NotFoundException(`Entity with ID ${id} not found`);
 		}
 
-		return await this._repository.save({ ...entity, ...updateDto });
+		return this._repository.save({ ...entity, ...updateDto });
 	}
 
 	// TODO: add boolean result///
