@@ -6,7 +6,9 @@ import { CategoryAttribute } from './categoryAttribute.entity';
 
 @Entity('AttributeNames')
 export class AttributeName extends BaseEntity {
-	@Column()
+	@Column({
+		unique: true,
+	})
 	@IsNotEmpty()
 	name: string;
 
@@ -14,6 +16,9 @@ export class AttributeName extends BaseEntity {
 	@IsNotEmpty()
 	type: string;
 
-	@OneToMany(() => CategoryAttribute, (categoryAttribute) => categoryAttribute.attributeName)
-    categoryAttributes: CategoryAttribute[]
+	@OneToMany(
+		() => CategoryAttribute,
+		(categoryAttribute) => categoryAttribute.attributeName
+	)
+	categoryAttributes: CategoryAttribute[];
 }

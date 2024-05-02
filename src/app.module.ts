@@ -8,6 +8,7 @@ import { AppService } from './app.service';
 import { UsersModule } from './user/users.module';
 import { ProductModule } from './product/product.module';
 import { CategoryModule } from './category/category.module';
+import { AttributeNameModule } from './resources/attribute-name/attribute-name.module';
 
 @Module({
 	imports: [
@@ -21,6 +22,7 @@ import { CategoryModule } from './category/category.module';
 		AuthModule,
 		ProductModule,
 		CategoryModule,
+		AttributeNameModule,
 	],
 	controllers: [AppController],
 	providers: [AppService],
