@@ -10,6 +10,7 @@ import { ProductModule } from './resources/product/product.module';
 import { CategoryModule } from './resources/category/category.module';
 import { AttributeNameModule } from './resources/attribute-name/attribute-name.module';
 import { CategoryAttributeModule } from './resources/category-attribute/category-attribute.module';
+import { ProductAttributeNameModule } from './resources/product-attribute-name/product-attribute-name.module';
 
 @Module({
 	imports: [
@@ -25,6 +26,7 @@ import { CategoryAttributeModule } from './resources/category-attribute/category
 		CategoryModule,
 		AttributeNameModule,
 		CategoryAttributeModule,
+		ProductAttributeNameModule,
 	],
 	controllers: [AppController],
 	providers: [AppService],
