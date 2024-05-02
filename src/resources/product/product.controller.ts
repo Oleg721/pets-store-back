@@ -1,13 +1,10 @@
 import {
 	Body,
 	Controller,
-	Delete,
 	Get,
 	NotFoundException,
 	Param,
-	Patch,
-	Post,
-	Query
+	Post
 } from '@nestjs/common';
 
 import { ProductService } from './product.service';
