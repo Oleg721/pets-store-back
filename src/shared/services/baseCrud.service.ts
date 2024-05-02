@@ -1,7 +1,12 @@
 import { NotFoundException } from '@nestjs/common';
 
 import { BaseEntity } from 'src/entities/base.entity';
-import { DeepPartial, FindOptionsWhere, Repository } from 'typeorm';
+import {
+	DeepPartial,
+	FindManyOptions,
+	FindOptionsWhere,
+	Repository,
+} from 'typeorm';
 
 export abstract class BaseCrudService<
 	TEntity extends BaseEntity,
@@ -14,8 +19,8 @@ export abstract class BaseCrudService<
 		return this._repository.save(createDto);
 	}
 
-	async findAll(): Promise<TEntity[]> {
-		return this._repository.find();
+	async findAll(options: FindManyOptions<TEntity> = {}): Promise<TEntity[]> {
+		return this._repository.find(options);
 	}
 
 	async findOne(id: number): Promise<TEntity> {
@@ -43,5 +48,9 @@ export abstract class BaseCrudService<
 	// TODO: add boolean result///
 	async remove(id: number): Promise<void> {
 		await this._repository.delete(id);
+	}
+
+	isExistById(id: number): Promise<boolean> {
+		return this._repository.existsBy({ id } as FindOptionsWhere<TEntity>);
 	}
 }

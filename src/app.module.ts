@@ -9,6 +9,7 @@ import { UsersModule } from './user/users.module';
 import { ProductModule } from './resources/product/product.module';
 import { CategoryModule } from './resources/category/category.module';
 import { AttributeNameModule } from './resources/attribute-name/attribute-name.module';
+import { CategoryAttributeModule } from './resources/category-attribute/category-attribute.module';
 
 @Module({
 	imports: [
@@ -23,6 +24,7 @@ import { AttributeNameModule } from './resources/attribute-name/attribute-name.m
 		ProductModule,
 		CategoryModule,
 		AttributeNameModule,
+		CategoryAttributeModule,
 	],
 	controllers: [AppController],
 	providers: [AppService],

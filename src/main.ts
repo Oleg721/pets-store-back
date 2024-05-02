@@ -26,6 +26,7 @@ async function bootstrap() {
 		.addTag('products')
 		.addTag('categories')
 		.addTag('attribute-names')
+		.addTag('category-attribute')
 		.addServer(url)
 		.build();
 

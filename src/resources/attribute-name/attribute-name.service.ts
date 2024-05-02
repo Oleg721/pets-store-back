@@ -1,8 +1,6 @@
 import {
-	BadRequestException,
 	Inject,
 	Injectable,
-	NotFoundException,
 } from '@nestjs/common';
 import { BaseCrudService } from 'src/shared/services/baseCrud.service';
 import { Repository } from 'typeorm';
