@@ -1,5 +1,5 @@
 import { CategoryAttribute } from "src/entities"
-import { ProductViewDto } from "src/product/dto/productView.dto"
+import { ProductViewDto } from "src/resources/product/dto/productView.dto"
 
 export class CreateViewDto {
     id: number

@@ -6,8 +6,8 @@ import { AuthModule } from './auth/auth.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UsersModule } from './user/users.module';
-import { ProductModule } from './product/product.module';
-import { CategoryModule } from './category/category.module';
+import { ProductModule } from './resources/product/product.module';
+import { CategoryModule } from './resources/category/category.module';
 import { AttributeNameModule } from './resources/attribute-name/attribute-name.module';
 
 @Module({
