@@ -21,15 +21,17 @@ export class AuthService {
 	) {}
 
 	async login(dto: LoginDto) {
-		const user = await this.validateUser(dto);
+		const { hashedpassword, ...rest } = await this.validateUser(dto);
 
-		const tokens = await this.generateTokenPair(user);
+		const tokens = await this.generateTokenPair(rest);
 
 		return { ...tokens };
 	}
 
 	async generateTokenPair(user: User) {
-		const payload = { sub: user.id, user: user };
+		// Fix "Issued At claim is invalid" error
+		const issuedAt = Math.floor(Date.now() / 1000) - 60;
+		const payload = { sub: user.id, user: user, iat: issuedAt };
 
 		const refreshToken = await this.jwtService.signAsync(payload, {
 			secret: this.config.get<string>('SECRET_REFRESH_TOKEN'),
