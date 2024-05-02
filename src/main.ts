@@ -21,6 +21,10 @@ async function bootstrap() {
 		.setTitle('Pets store example')
 		.setDescription('The pats API description')
 		.setVersion('1.0')
+		.addTag('auth')
+		.addTag('users')
+		.addTag('products')
+		.addTag('categories')
 		.addServer(url)
 		.build();
 
