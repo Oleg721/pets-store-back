@@ -9,13 +9,13 @@ import { Repository } from 'typeorm';
 export class CategoryService extends BaseCrudService<Category, UpdateCategoryDto, CreateCategoryDto> {
 	constructor(
 		@Inject(Category)
-		private productRepository: Repository<Category>
+		private categoryRepository: Repository<Category>
 	) {
-		super(productRepository);
+		super(categoryRepository);
 	}
 
 	async findAllWithCategoryAttributes(): Promise<Category[]> {
-		return this.productRepository.find({
+		return this.categoryRepository.find({
 			relations: {
 				categoryAttributes: {
 					attributeName: true,

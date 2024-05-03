@@ -7,14 +7,10 @@ import { ProductAttributeName } from './productAttributeName.entity';
 
 @Entity('CategoryAttributes')
 export class CategoryAttribute extends BaseEntity {
-	@Column({
-		nullable: false
-	})
+	@Column()
 	categoryId: number;
 
-	@Column({
-		nullable: false
-	})
+	@Column()
 	attributeNameId: number;
 
 	@ManyToOne(() => Category, (category) => category.categoryAttributes)
