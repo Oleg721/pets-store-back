@@ -21,8 +21,14 @@ async function bootstrap() {
 		.setTitle('Pets store example')
 		.setDescription('The pats API description')
 		.setVersion('1.0')
+		.addTag('auth')
+		.addTag('users')
+		.addTag('products')
+		.addTag('categories')
+		.addTag('attribute-names')
+		.addTag('category-attribute')
+		.addTag('product-attribute-names')
 		.addServer(url)
-		.addTag('pets')
 		.build();
 
 	const document = SwaggerModule.createDocument(app, config);

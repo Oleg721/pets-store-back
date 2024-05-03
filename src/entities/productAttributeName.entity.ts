@@ -9,6 +9,12 @@ export class ProductAttributeName extends BaseEntity {
 	@Column()
 	value: string;
 
+	@Column()
+	productId: number;
+
+	@Column()
+	categoryAttributeId: number;
+
 	@ManyToOne(() => CategoryAttribute, (categoryAttribute) => categoryAttribute.productAttributeNames)
 	categoryAttribute: CategoryAttribute;
 

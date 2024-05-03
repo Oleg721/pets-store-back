@@ -12,6 +12,11 @@ export class Category extends BaseEntity {
     @Column()
     description: string
 
+    @Column({
+        nullable: true
+    })
+    parentId: number
+
     @ManyToOne((type) => Category, (category) => category.children)
     parent: Category
 
