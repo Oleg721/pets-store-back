@@ -23,8 +23,8 @@ export class CategoryController {
 	) {}
 
 	@Post()
-	create(@Body() createCategoryDto: CreateCategoryDto) {
-		return this.categoryService.create(createCategoryDto);
+	async create(@Body() createCategoryDto: CreateCategoryDto) {
+		return this.mapper.EntityToViewDto(await this.categoryService.create(createCategoryDto))
 	}
 
 	@Get()

@@ -1,17 +1,79 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, forwardRef } from '@nestjs/common';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
 import { BaseCrudService } from 'src/shared/services/baseCrud.service';
-import { Category } from 'src/entities';
-import { Repository } from 'typeorm';
+import { Category, CategoryAttribute } from 'src/entities';
+import { Repository, In } from 'typeorm';
+import { AttributeNameService } from '../attribute-name/attribute-name.service';
+import { CategoryAttributeService } from '../category-attribute/category-attribute.service';
 
 @Injectable()
-export class CategoryService extends BaseCrudService<Category, UpdateCategoryDto, CreateCategoryDto> {
+export class CategoryService extends BaseCrudService<
+	Category,
+	UpdateCategoryDto,
+	CreateCategoryDto
+> {
 	constructor(
 		@Inject(Category)
-		private categoryRepository: Repository<Category>
+		private categoryRepository: Repository<Category>,
+		private readonly attributeNameService: AttributeNameService,
+		@Inject(forwardRef(() => CategoryAttributeService))
+		private readonly categoryAttributeService: CategoryAttributeService
 	) {
 		super(categoryRepository);
+	}
+
+	override async create(
+		createDto: CreateCategoryDto
+	): Promise<CreateCategoryDto & Category> {
+		const { attributeNameIds, ...createCategoryDto } = createDto;
+
+		const rootParent = await this.categoryRepository.findOneBy({
+			id: createCategoryDto.parentId,
+			parentId: null,
+		});
+
+		if (!rootParent) {
+			return null;
+		}
+
+		const isNameExist = await this.categoryRepository.existsBy({
+			name: createCategoryDto.name,
+		});
+
+		if (isNameExist) {
+			return null;
+		}
+
+		const category = await super.create(createCategoryDto);
+
+		if(!attributeNameIds || attributeNameIds.length === 0){
+			return category
+		}
+
+		const attributesNames = await this.attributeNameService.findAll({
+			where: { id: In(attributeNameIds) },
+		});
+
+		const categoryAttributes = attributesNames.map<CategoryAttribute>((an) => {
+			const categoryAttribute = new CategoryAttribute();
+			categoryAttribute.category = category;
+			categoryAttribute.attributeName = an;
+			return categoryAttribute;
+		});
+
+		await this.categoryAttributeService.createMany(categoryAttributes);
+
+		const categoryWithRelations = this.categoryRepository.findOne({
+			where: { id: category.id },
+			relations: {
+				categoryAttributes: {
+					attributeName: true,
+				},
+			},
+		});
+
+		return categoryWithRelations;
 	}
 
 	async findAllWithCategoryAttributes(): Promise<Category[]> {
@@ -19,8 +81,8 @@ export class CategoryService extends BaseCrudService<Category, UpdateCategoryDto
 			relations: {
 				categoryAttributes: {
 					attributeName: true,
-				}
-			}
+				},
+			},
 		});
 	}
 }
