@@ -47,7 +47,7 @@ export class CategoryService extends BaseCrudService<
 
 		const category = await super.create(createCategoryDto);
 
-		if(!attributeNameIds || attributeNameIds.length === 0){
+		if(!attributeNameIds?.length){
 			return category
 		}
 
