@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, forwardRef } from '@nestjs/common';
 import { CreateCategoryAttributeDto } from './dto/create-category-attribute.dto';
 import { UpdateCategoryAttributeDto } from './dto/update-category-attribute.dto';
 import { BaseCrudService } from 'src/shared/services/baseCrud.service';
@@ -16,6 +16,7 @@ export class CategoryAttributeService extends BaseCrudService<
 	constructor(
 		@Inject(CategoryAttribute)
 		private categoryAttribute: Repository<CategoryAttribute>,
+		@Inject(forwardRef(() => CategoryService))
 		private readonly categoryService: CategoryService,
 		private readonly attributeNameService: AttributeNameService
 	) {
@@ -24,8 +25,31 @@ export class CategoryAttributeService extends BaseCrudService<
 	override async create(
 		createDto: CreateCategoryAttributeDto
 	): Promise<CreateCategoryAttributeDto & CategoryAttribute> {
-		console.log(createDto);
+		const isCorrect = await this.checkCreateDto(createDto);
 
+		return isCorrect ? super.create(createDto) : null;
+	}
+
+	async createMany(
+		createDto: CreateCategoryAttributeDto[]
+	): Promise<CreateCategoryAttributeDto[] & CategoryAttribute[]> {
+		const correctDto = createDto.filter((cd) => this.checkCreateDto(cd));
+
+		return correctDto.length !== 0
+			? this.categoryAttribute.save(correctDto)
+			: null;
+	}
+
+	async findAllWithCategoryAndAttrName(): Promise<CategoryAttribute[]> {
+		return super.findAll({
+			relations: {
+				category: true,
+				attributeName: true,
+			},
+		});
+	}
+
+	private async checkCreateDto(createDto: CreateCategoryAttributeDto) {
 		const isExist = await this.categoryAttribute.existsBy(createDto);
 		if (isExist) {
 			throw new Error(
@@ -48,16 +72,6 @@ export class CategoryAttributeService extends BaseCrudService<
 				`AttributeName with Id: ${createDto.attributeNameId} not exist`
 			);
 		}
-
-		return super.create(createDto);
-	}
-
-	async findAllWithCategoryAndAttrName(): Promise<CategoryAttribute[]> {
-		return super.findAll({
-			relations: {
-				category: true,
-				attributeName: true,
-			},
-		});
+		return true;
 	}
 }
