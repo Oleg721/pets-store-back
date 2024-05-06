@@ -4,14 +4,15 @@ import {
 	Get,
 	NotFoundException,
 	Param,
-	Post
+	Post,
 } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 
+import { Pagination, PaginationDecorator } from 'src/decorators/Pagination.decorator';
 import { ProductService } from './product.service';
 import { ProductViewDto } from './dto/productView.dto';
 import { ProductMapperProvider } from './productMapper.provider';
 import { CreateProductDto } from './dto/create-product.dto';
-import { ApiTags } from '@nestjs/swagger';
 
 @ApiTags('products')
 @Controller('products')
@@ -27,8 +28,10 @@ export class ProductController {
 	}
 
 	@Get()
-	async getAll(): Promise<ProductViewDto[]> {
-		const result = await this.productService.findAll();
+	async getAll(
+		@PaginationDecorator() options: Pagination
+	): Promise<ProductViewDto[]> {
+		const result = await this.productService.findAll(options);
 		return result.map<ProductViewDto>((prod) =>
 			this.mapper.productToViewDto(prod)
 		);

@@ -24,6 +24,7 @@ export class ProductMapperProvider implements IProductMapper {
 	productToViewDto(product: Product): ProductViewDto {
 		const productViewDto = new ProductViewDto();
 
+		productViewDto.id = product.id;
 		productViewDto.categoryId = product.categoryId;
 		productViewDto.createdat = product.createdat;
 		productViewDto.description = product.description;
