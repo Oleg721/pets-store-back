@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 
 import { User } from '../entities';
 import { UserDto } from './dto/user.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
 
 @Injectable()
 export class UsersService {
@@ -45,7 +46,7 @@ export class UsersService {
 	}
 
 	// Update user by ID
-	async updateUserById(id: number, data: Partial<User>): Promise<UserDto> {
+	async updateUserById(id: number, data: UpdateUserDto): Promise<UserDto> {
 		const user = await this.userRepository.findOneBy({ id });
 
 		if (!user) {

@@ -7,6 +7,7 @@ import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
 import { UsersModule } from 'src/user/users.module';
 import { SecurityModule } from 'src/security/security.module';
+import { JwtStrategy } from 'src/strategies/jwtStrategy';
 
 @Module({
 	imports: [
@@ -19,7 +20,8 @@ import { SecurityModule } from 'src/security/security.module';
 			signOptions: { expiresIn: '2h' },
 		}),
 	],
-	providers: [AuthService],
+	// JWT strategy extracts and attaches the user to the req
+	providers: [AuthService, JwtStrategy],
 	controllers: [AuthController],
 })
 export class AuthModule {}

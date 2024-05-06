@@ -1,19 +1,26 @@
 import {
 	Controller,
 	Get,
-	Post,
 	Body,
 	Delete,
 	Param,
-	Put,
+	UseGuards,
+	Patch,
 } from '@nestjs/common';
 
 import { UsersService } from './users.service';
 import { User } from '../entities';
 import { UserDto } from './dto/user.dto';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { RolesGuard } from 'src/guards/roles.guard';
+import { Roles } from 'src/decorators/roles.decorator';
+import { JwtAuthGuard } from 'src/guards/jwt-auth.guard';
+import { UpdateUserDto } from './dto/update-user.dto';
+
 @ApiTags('users')
 @Controller('users')
+@UseGuards(JwtAuthGuard) // Protect controller with JwtAuthGuard
+@ApiBearerAuth('jwt') // Requires JWT authorization
 export class UsersController {
 	constructor(private readonly usersService: UsersService) {}
 
@@ -28,15 +35,20 @@ export class UsersController {
 		return await this.usersService.getUserById(id);
 	}
 
-	@Put(':id')
+	@Patch(':id')
+	@UseGuards(RolesGuard)
 	async updateUserById(
 		@Param('id') id: number,
-		@Body() data: Partial<User>
+		@Body() data: UpdateUserDto
 	): Promise<UserDto> {
+		console.log('data:', data);
 		return await this.usersService.updateUserById(id, data);
 	}
 
 	@Delete(':id')
+	// For an example
+	@UseGuards(RolesGuard)
+	@Roles('admin')
 	async deleteUserById(@Param('id') id: number): Promise<void> {
 		return await this.usersService.deleteUserById(id);
 	}

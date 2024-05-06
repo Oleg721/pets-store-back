@@ -1,5 +1,7 @@
 import { IsDate, IsEmail, IsInt, IsNotEmpty, IsString } from 'class-validator';
 
+import { UserRole } from 'src/entities/user.entity';
+
 export class UserDto {
   @IsInt()
   id: number;
@@ -19,7 +21,7 @@ export class UserDto {
   email: string;
 
   @IsString()
-  role: string;
+  role: UserRole;
 
   @IsString()
   status: string;

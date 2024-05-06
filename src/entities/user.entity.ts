@@ -1,7 +1,7 @@
 import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 import { IsEmail, IsNotEmpty } from 'class-validator';
 
-export enum Role {
+export enum UserRole {
 	MERCHANT = 'merchant',
 	USER = 'user',
 	ADMIN = 'admin',
@@ -35,8 +35,12 @@ export class User {
 	@Column()
 	hashedpassword: string;
 
-	@Column()
-	role: string;
+	@Column({
+		type: 'enum',
+		enum: UserRole,
+		default: UserRole.USER
+	})
+	role: UserRole;
 
 	@Column()
 	status: string;

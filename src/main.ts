@@ -21,6 +21,15 @@ async function bootstrap() {
 		.setTitle('Pets store example')
 		.setDescription('The pats API description')
 		.setVersion('1.0')
+		.addBearerAuth(
+			{
+				type: 'http',
+				scheme: 'bearer',
+				bearerFormat: 'JWT',
+				name: 'jwt'
+			},
+			'jwt'
+		)
 		.addTag('auth')
 		.addTag('users')
 		.addTag('products')
@@ -32,7 +41,11 @@ async function bootstrap() {
 		.build();
 
 	const document = SwaggerModule.createDocument(app, config);
-	SwaggerModule.setup(apiVersion, app, document);
+	SwaggerModule.setup(apiVersion, app, document, {
+		swaggerOptions: {
+			persistAuthorization: true, // Optional: keeps authorization details on reload
+		},
+	});
 
 	// app use global pipes to automatically validate requests 
 	// from entity itself such as:
