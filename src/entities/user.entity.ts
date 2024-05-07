@@ -2,7 +2,6 @@ import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 import { IsEmail, IsNotEmpty } from 'class-validator';
 
 export enum Role {
-	GUEST = 'guest',
 	USER = 'user',
 	ADMIN = 'admin',
 	MERCHANT = 'merchant',
