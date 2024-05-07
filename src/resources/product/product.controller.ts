@@ -13,7 +13,7 @@ import { ProductService } from './product.service';
 import { ProductViewDto } from './dto/productView.dto';
 import { ProductMapperProvider } from './productMapper.provider';
 import { CreateProductDto } from './dto/create-product.dto';
-import { PaginationResult } from '../pagination/dto/pagination.dto';
+import { PaginationResult } from '../../common/dto/pagination.dto';
 import { Product } from 'src/entities';
 
 @ApiTags('products')

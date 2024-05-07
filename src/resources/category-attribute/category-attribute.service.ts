@@ -40,15 +40,6 @@ export class CategoryAttributeService extends BaseCrudService<
 			: null;
 	}
 
-	async findAllWithCategoryAndAttrName(): Promise<CategoryAttribute[]> {
-		return super.findAll({
-			relations: {
-				category: true,
-				attributeName: true,
-			},
-		});
-	}
-
 	private async checkCreateDto(createDto: CreateCategoryAttributeDto) {
 		const isExist = await this.categoryAttribute.existsBy(createDto);
 		if (isExist) {

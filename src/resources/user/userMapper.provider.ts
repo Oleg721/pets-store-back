@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 
 import { User } from 'src/entities';
-import { PaginationResult } from 'src/resources/pagination/dto/pagination.dto';
+import { PaginationResult } from 'src/common/dto/pagination.dto';
 import { UserViewDto } from './dto/view-user.dto';
 
 @Injectable()

@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 
 import { Product, ProductAttributeName } from 'src/entities';
 import { ProductViewDto } from './dto/productView.dto';
-import { PaginationResult } from '../pagination/dto/pagination.dto';
+import { PaginationResult } from 'src/common/dto/pagination.dto';
 
 const convertAttributesArrayToObject = (
 	arr: ProductAttributeName[]

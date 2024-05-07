@@ -7,12 +7,18 @@ import {
 	Param,
 	Delete,
 	Query,
+	ParseBoolPipe,
 } from '@nestjs/common';
 import { CategoryService } from './category.service';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
 import { ProductMapperProvider } from './categoryMapper.provider';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiQuery, ApiTags } from '@nestjs/swagger';
+import { Category } from 'src/entities';
+import {
+	Pagination,
+	PaginationDecorator,
+} from 'src/decorators/Pagination.decorator';
 
 @ApiTags('categories')
 @Controller('categories')
@@ -24,17 +30,34 @@ export class CategoryController {
 
 	@Post()
 	async create(@Body() createCategoryDto: CreateCategoryDto) {
-		return this.mapper.EntityToViewDto(await this.categoryService.create(createCategoryDto))
+		return this.mapper.EntityToViewDto(
+			await this.categoryService.create(createCategoryDto)
+		);
 	}
 
 	@Get()
-	async findAll(@Query('category-attributes') hasCategoryAttributes?: string) {
-		const categories =
-			hasCategoryAttributes === 'true'
-				? await this.categoryService.findAllWithCategoryAttributes()
-				: await this.categoryService.findAll();
+	@ApiQuery({ name: 'page', required: false })
+	@ApiQuery({ name: 'size', required: false })
+	@ApiQuery({ name: 'with_category_attributes', required: false })
+	async findAll(
+		@PaginationDecorator() pagination: Pagination,
+		@Query('with_category_attributes', new ParseBoolPipe({optional: true}))
+		hasCategoryAttributes?: boolean
+	) {
+		const relations = {
+			categoryAttributes: hasCategoryAttributes && {
+				attributeName: true,
+			},
+		};
 
-		return categories.map((c) => this.mapper.EntityToViewDto(c));
+		const categories = await this.categoryService.findAll({
+			relations,
+			...pagination,
+		});
+		return this.mapper.EntityToPaginationViewDto(
+			categories as [Category[], number],
+			!!pagination
+		);
 	}
 
 	@Get(':id')

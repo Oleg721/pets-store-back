@@ -10,7 +10,7 @@ import { ApiQuery, ApiTags } from '@nestjs/swagger';
 
 import { UsersService } from './users.service';
 import { Pagination, PaginationDecorator } from 'src/decorators/Pagination.decorator';
-import { PaginationResult } from 'src/resources/pagination/dto/pagination.dto';
+import { PaginationResult } from 'src/common/dto/pagination.dto';
 import { UserMapperProvider } from './userMapper.provider';
 import { UserViewDto } from './dto/view-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';

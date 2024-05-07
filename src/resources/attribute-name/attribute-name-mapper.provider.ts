@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { AttributeName } from 'src/entities';
 
 import { AttributeNameViewDto } from './dto/view-attribute-name.dto';
-import { PaginationResult } from '../pagination/dto/pagination.dto';
+import { PaginationResult } from '../../common/dto/pagination.dto';
 
 
 @Injectable()

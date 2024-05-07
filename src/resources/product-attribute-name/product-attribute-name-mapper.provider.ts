@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 
 import { ProductAttributeName } from 'src/entities';
 import { ViewProductAttributeNameDto } from './dto/view-product-attribute-name.dto';
-import { PaginationResult } from '../pagination/dto/pagination.dto';
+import { PaginationResult } from '../../common/dto/pagination.dto';
 
 @Injectable()
 export class ProductAttrNameMapperProvider {

@@ -20,7 +20,7 @@ import {
 	PaginationDecorator,
 } from 'src/decorators/Pagination.decorator';
 import { AttributeName } from 'src/entities';
-import { PaginationResult } from '../pagination/dto/pagination.dto';
+import { PaginationResult } from '../../common/dto/pagination.dto';
 
 @ApiTags('attribute-names')
 @Controller('attribute-names')

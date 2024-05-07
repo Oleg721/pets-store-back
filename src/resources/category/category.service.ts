@@ -47,8 +47,8 @@ export class CategoryService extends BaseCrudService<
 
 		const category = await super.create(createCategoryDto);
 
-		if(!attributeNameIds?.length){
-			return category
+		if (!attributeNameIds?.length) {
+			return category;
 		}
 
 		const attributesNames = await this.attributeNameService.findAll({
@@ -74,15 +74,5 @@ export class CategoryService extends BaseCrudService<
 		});
 
 		return categoryWithRelations;
-	}
-
-	async findAllWithCategoryAttributes(): Promise<Category[]> {
-		return this.categoryRepository.find({
-			relations: {
-				categoryAttributes: {
-					attributeName: true,
-				},
-			},
-		});
 	}
 }
