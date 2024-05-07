@@ -6,14 +6,15 @@ import { UserViewDto } from './dto/view-user.dto';
 
 @Injectable()
 export class UserMapperProvider {
-	userToViewPaginationDto([users, count]: [
-		user: User[],
-		count: number,
-	]): PaginationResult<UserViewDto> {
+	userToViewPaginationDto(
+		[users, count]: [user: User[], count: number],
+		hasPagination: boolean = true
+	): PaginationResult<UserViewDto> {
 		const usersDto = users.map((u) => this.userToViewDto(u));
+
 		const userViewResultDto = new PaginationResult<UserViewDto>(
 			usersDto,
-			count
+			hasPagination ? count : undefined
 		);
 
 		return userViewResultDto;

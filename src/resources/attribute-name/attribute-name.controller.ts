@@ -50,16 +50,14 @@ export class AttributeNameController {
 	async findAll(
 		@PaginationDecorator() pagination: Pagination
 	): Promise<PaginationResult<AttributeNameViewDto>> {
-		const [data, count] = await this.attributeNameService.findAll({
+		const attributeNames = await this.attributeNameService.findAll({
 			...pagination,
 		});
 
-		const total = pagination ? count : undefined;
-
-		return this.mapper.entityToViewPaginationDto([data, total] as [
-			AttributeName[],
-			number,
-		]);
+		return this.mapper.entityToViewPaginationDto(
+			attributeNames as [AttributeName[], number],
+			!!pagination
+		);
 	}
 
 	@Get(':id')

@@ -30,13 +30,12 @@ export class UsersController {
 	async getAll(
 		@PaginationDecorator() pagination: Pagination
 	): Promise<PaginationResult<UserViewDto>> {
-		const [data, count] = await this.usersService.findAll({ ...pagination });
+		const users = await this.usersService.findAll({ ...pagination });
 
-		const total = pagination ? count : undefined;
-		return this.mapper.userToViewPaginationDto([data, total] as [
-			User[],
-			number,
-		]);
+		return this.mapper.userToViewPaginationDto(
+			users as [User[], number],
+			!!pagination
+		);
 	}
 
 	@Get(':id') // /users/:id

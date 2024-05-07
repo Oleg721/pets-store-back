@@ -18,16 +18,17 @@ const convertAttributesArrayToObject = (
 
 @Injectable()
 export class ProductMapperProvider {
-	productToViewPaginationDto([products, count]: [
-		product: Product[],
-		count: number,
-	]): PaginationResult<ProductViewDto> {
+	productToViewPaginationDto(
+		[products, count]: [product: Product[], count: number],
+		hasPagination: boolean = true
+	): PaginationResult<ProductViewDto> {
 		const productsDto = products.map((product) => {
 			return this.productToViewDto(product);
 		});
+
 		const productViewResultDto = new PaginationResult<ProductViewDto>(
 			productsDto,
-			count
+			hasPagination ? count : undefined
 		);
 
 		return productViewResultDto;

@@ -1,9 +1,21 @@
 import { createParamDecorator, ExecutionContext } from '@nestjs/common';
-import { Request } from 'express'; 
+import { IsInt, IsOptional, Min, validateSync } from 'class-validator';
+import { Request } from 'express';
 
 export interface Pagination {
 	take?: number;
 	skip?: number;
+}
+
+class PaginationParams {
+	@IsInt()
+	@Min(1)
+	take: number;
+
+	@IsInt()
+	@Min(0)
+	@IsOptional()
+	skip: number;
 }
 
 export const PaginationDecorator = createParamDecorator(
@@ -13,15 +25,20 @@ export const PaginationDecorator = createParamDecorator(
 		const page = request.query.page;
 		const size = request.query.size;
 
-		const pageNum = Number(page);
-		const limitNum = Number(size);
+		const paginationParams = new PaginationParams();
 
-		const take = limitNum || undefined;
-		const skip = (pageNum - 1) * limitNum || undefined;
+		paginationParams.take = size ? parseInt(size as string) : undefined;
+		paginationParams.skip = page ? parseInt(page as string) : undefined;
+
+		const validationErrors = validateSync(paginationParams);
+
+		if (validationErrors?.length) {
+			return undefined;
+		}
 
 		return {
-			take,
-			skip,
+			take: paginationParams.take,
+			skip: paginationParams.skip,
 		};
 	}
 );

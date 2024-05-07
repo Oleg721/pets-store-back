@@ -11,41 +11,48 @@ import { ProductAttributeName } from 'src/entities';
 @Controller('product-attribute-names')
 @ApiTags('product-attribute-names')
 export class ProductAttributeNameController {
-  constructor(
-    private readonly productAttributeNameService: ProductAttributeNameService,
+	constructor(
+		private readonly productAttributeNameService: ProductAttributeNameService,
 		private readonly mapper: ProductAttrNameMapperProvider
-  ) {}
+	) {}
 
-  @Post()
-  create(@Body() createProductAttributeNameDto: CreateProductAttributeNameDto) {
-    return this.productAttributeNameService.create(createProductAttributeNameDto);
-  }
+	@Post()
+	create(@Body() createProductAttributeNameDto: CreateProductAttributeNameDto) {
+		return this.productAttributeNameService.create(
+			createProductAttributeNameDto
+		);
+	}
 
-  @Get()
-  @ApiQuery({ name: 'page', required: false })
+	@Get()
+	@ApiQuery({ name: 'page', required: false })
 	@ApiQuery({ name: 'size', required: false })
-  async findAll(@PaginationDecorator() pagination: Pagination) {
-    const [data, count] = await this.productAttributeNameService.findAll({ ...pagination});
+	async findAll(@PaginationDecorator() pagination: Pagination) {
+		const productAttributeNames = await this.productAttributeNameService.findAll({ ...pagination });
 
-		const total = pagination ? count: undefined;
-    return this.mapper.productAttrNameToViewPaginationDto([data, total] as [
-			ProductAttributeName[],
-			number,
-		]);
-  }
+		return this.mapper.productAttrNameToViewPaginationDto(
+			productAttributeNames as [ProductAttributeName[], number],
+			!!pagination
+		);
+	}
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.productAttributeNameService.findOne(+id);
-  }
+	@Get(':id')
+	findOne(@Param('id') id: string) {
+		return this.productAttributeNameService.findOne(+id);
+	}
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateProductAttributeNameDto: UpdateProductAttributeNameDto) {
-    return this.productAttributeNameService.update(+id, updateProductAttributeNameDto);
-  }
+	@Patch(':id')
+	update(
+		@Param('id') id: string,
+		@Body() updateProductAttributeNameDto: UpdateProductAttributeNameDto
+	) {
+		return this.productAttributeNameService.update(
+			+id,
+			updateProductAttributeNameDto
+		);
+	}
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.productAttributeNameService.remove(+id);
-  }
+	@Delete(':id')
+	remove(@Param('id') id: string) {
+		return this.productAttributeNameService.remove(+id);
+	}
 }

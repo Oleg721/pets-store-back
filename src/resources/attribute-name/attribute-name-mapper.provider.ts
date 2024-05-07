@@ -1,30 +1,29 @@
 import { Injectable } from '@nestjs/common';
-import { AttributeName } from 'src/entities';
 
+import { AttributeName } from 'src/entities';
 import { AttributeNameViewDto } from './dto/view-attribute-name.dto';
 import { PaginationResult } from '../../common/dto/pagination.dto';
 
-
 @Injectable()
 export class AttributeNameMapperProvider {
-	entityToViewPaginationDto([attributes, count]: [
-		attribute: AttributeName[],
-		count: number,
-	]): PaginationResult<AttributeNameViewDto> {
+	entityToViewPaginationDto(
+		[attributes, count]: [attribute: AttributeName[], count: number],
+		hasPagination: boolean = true
+	): PaginationResult<AttributeNameViewDto> {
 		const attributeDto = attributes.map((attribute) => {
-			return this.entityToViewDto(attribute)
-		})
+			return this.entityToViewDto(attribute);
+		});
 
 		const productViewResultDto = new PaginationResult<AttributeNameViewDto>(
 			attributeDto,
-			count
+			hasPagination ? count : undefined
 		);
 
 		return productViewResultDto;
 	}
 
 	entityToViewDto(attributeName: AttributeName): AttributeNameViewDto {
-		const attributeNameViewDto = new AttributeNameViewDto()
+		const attributeNameViewDto = new AttributeNameViewDto();
 
 		attributeNameViewDto.id = attributeName.id;
 		attributeNameViewDto.name = attributeName.name;

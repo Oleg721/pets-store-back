@@ -8,7 +8,10 @@ import {
 } from '@nestjs/common';
 import { ApiQuery, ApiTags } from '@nestjs/swagger';
 
-import { Pagination, PaginationDecorator } from 'src/decorators/Pagination.decorator';
+import {
+	Pagination,
+	PaginationDecorator,
+} from 'src/decorators/Pagination.decorator';
 import { ProductService } from './product.service';
 import { ProductViewDto } from './dto/productView.dto';
 import { ProductMapperProvider } from './productMapper.provider';
@@ -26,7 +29,7 @@ export class ProductController {
 
 	@Post()
 	create(@Body() createProductDto: CreateProductDto) {
-	  return this.productService.create(createProductDto);
+		return this.productService.create(createProductDto);
 	}
 
 	@Get()
@@ -35,10 +38,12 @@ export class ProductController {
 	async getAll(
 		@PaginationDecorator() pagination: Pagination
 	): Promise<PaginationResult<ProductViewDto>> {
-		const [data, count] = await this.productService.findAll({ ...pagination});
+		const products = await this.productService.findAll({ ...pagination });
 
-		const total = pagination ? count: undefined;
-		return this.mapper.productToViewPaginationDto([data, total] as [Product[], number]);
+		return this.mapper.productToViewPaginationDto(
+			products as [Product[], number],
+			!!pagination
+		);
 	}
 
 	@Get(':id')
@@ -49,12 +54,12 @@ export class ProductController {
 		}
 		return this.mapper.productToViewDto(product);
 	}
-  
+
 	// @Patch(':id')
 	// update(@Param('id') id: string, @Body() updateTestDto: UpdateTestDto) {
 	//   return this.productService.update(+id, updateTestDto);
 	// }
-  
+
 	// @Delete(':id')
 	// remove(@Param('id') id: string) {
 	//   return this.productService.remove(+id);

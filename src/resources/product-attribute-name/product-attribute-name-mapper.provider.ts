@@ -6,14 +6,14 @@ import { PaginationResult } from '../../common/dto/pagination.dto';
 
 @Injectable()
 export class ProductAttrNameMapperProvider {
-	productAttrNameToViewPaginationDto([attrNames, count]: [
-		attrNames: ProductAttributeName[],
-		count: number,
-	]): PaginationResult<ViewProductAttributeNameDto> {
-		const usersDto = attrNames.map((an) =>this.productAttrNamesToViewDto(an));
+	productAttrNameToViewPaginationDto(
+		[attrNames, count]: [attrNames: ProductAttributeName[], count: number],
+		hasPagination: boolean = true
+	): PaginationResult<ViewProductAttributeNameDto> {
+		const usersDto = attrNames.map((an) => this.productAttrNamesToViewDto(an));
 		const userViewResultDto = new PaginationResult<ViewProductAttributeNameDto>(
 			usersDto,
-			count
+			hasPagination ? count : undefined
 		);
 
 		return userViewResultDto;
@@ -27,7 +27,8 @@ export class ProductAttrNameMapperProvider {
 		productAttributeNameViewDto.id = productAttrName.id;
 		productAttributeNameViewDto.value = productAttrName.value;
 		productAttributeNameViewDto.productId = productAttrName.productId;
-		productAttributeNameViewDto.categoryAttributeId = productAttrName.categoryAttributeId;
+		productAttributeNameViewDto.categoryAttributeId =
+			productAttrName.categoryAttributeId;
 
 		return productAttributeNameViewDto;
 	}
