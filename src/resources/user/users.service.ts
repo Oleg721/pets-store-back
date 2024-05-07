@@ -2,10 +2,10 @@ import { BadRequestException, Inject, Injectable, NotFoundException } from '@nes
 // Future improvements: create own Repository that will use typeorm repo inside
 import { Repository } from 'typeorm';
 
-import { User } from '../entities';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { RegisterDto } from 'src/auth/dto/auth.dto';
 import { BaseCrudService } from 'src/shared/services/baseCrud.service';
+import { User } from 'src/entities';
 
 @Injectable()
 export class UsersService extends BaseCrudService<User, UpdateUserDto, RegisterDto> {

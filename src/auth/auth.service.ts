@@ -7,7 +7,7 @@ import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 
 import { User } from 'src/entities';
-import { UsersService } from 'src/user/users.service';
+import { UsersService } from 'src/resources/user/users.service';
 import { SecurityService } from 'src/security/security.service';
 import { LoginDto, RegisterDto } from './dto/auth.dto';
 import { Role } from 'src/entities/user.entity';

@@ -9,15 +9,12 @@ import {
 import { ApiQuery, ApiTags } from '@nestjs/swagger';
 
 import { UsersService } from './users.service';
-import { User } from '../entities';
-import {
-	Pagination,
-	PaginationDecorator,
-} from 'src/decorators/Pagination.decorator';
+import { Pagination, PaginationDecorator } from 'src/decorators/Pagination.decorator';
 import { PaginationResult } from 'src/resources/pagination/dto/pagination.dto';
 import { UserMapperProvider } from './userMapper.provider';
 import { UserViewDto } from './dto/view-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { User } from 'src/entities';
 
 @ApiTags('users')
 @Controller('users')
