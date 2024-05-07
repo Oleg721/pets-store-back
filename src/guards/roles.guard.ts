@@ -11,7 +11,7 @@ export class RolesGuard implements CanActivate {
 		// Consumes role from controller' guard
 		const roles = this.reflector.get(Roles, context.getHandler());
 
-		if (!roles) {
+		if (!roles?.length) {
       // The default user' permissions role has been set
 			return true;
 		}
@@ -19,7 +19,7 @@ export class RolesGuard implements CanActivate {
 		const request = context.switchToHttp().getRequest();
 		const user = request.user;
 
-		if (user?.role === roles) {
+		if (roles.includes(user?.role)) {
 			return true;
 		}
 
