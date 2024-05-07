@@ -3,35 +3,19 @@ import { BadRequestException, Inject, Injectable, NotFoundException } from '@nes
 import { Repository } from 'typeorm';
 
 import { User } from '../entities';
-import { UserDto } from './dto/user.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
+import { RegisterDto } from 'src/auth/dto/auth.dto';
+import { BaseCrudService } from 'src/shared/services/baseCrud.service';
 
 @Injectable()
-export class UsersService {
+export class UsersService extends BaseCrudService<User, UpdateUserDto, RegisterDto> {
 	constructor(
 		@Inject(User)
 		private userRepository: Repository<User>
 		// There are many different strategies to handle TypeORM transactions.
 		// We recommend using the QueryRunner class because it gives full control over the transaction.
-	) {}
-
-	private toUserDto(user: User): UserDto {
-    const { hashedpassword, ...rest } = user;
-    return { ...rest };
-  }
-
-	// Get all users
-	async getAllUsers(): Promise<UserDto[]> {
-		const users = await this.userRepository.find();
-		return users.map(this.toUserDto);
-	}
-
-	// Get user by ID
-	async getUserById(id: number): Promise<UserDto> {
-		const user = await this.userRepository.findOneBy({ id });
-
-		if (!user) throw new NotFoundException(`User with ID ${id} not found`);
-
-		return this.toUserDto(user);
+	) {
+		super(userRepository);
 	}
 
 	async getUserByEmail(email: string): Promise<User> {
@@ -44,18 +28,6 @@ export class UsersService {
 		return user;
 	}
 
-	// Update user by ID
-	async updateUserById(id: number, data: Partial<User>): Promise<UserDto> {
-		const user = await this.userRepository.findOneBy({ id });
-
-		if (!user) {
-			throw new NotFoundException(`User with ID ${id} not found`);
-		}
-
-		const updatedUser = await this.userRepository.save({ ...user, ...data });
-		return this.toUserDto(updatedUser);
-	}
-
 	// Create a new user
 	async createUser(user: Partial<User>): Promise<User> {
 		const oldUser = await this.getUserByEmail(user.email);
@@ -65,11 +37,5 @@ export class UsersService {
 		}
 
 		return await this.userRepository.save(user);
-	}
-
-	// Delete user by ID
-	// 200 if user deleted successfully
-	async deleteUserById(id: number): Promise<void> {
-		await this.userRepository.delete(id);
 	}
 }

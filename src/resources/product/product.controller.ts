@@ -31,7 +31,7 @@ export class ProductController {
 
 	@Get()
 	@ApiQuery({ name: 'page', required: false })
-	@ApiQuery({ name: 'limit', required: false })
+	@ApiQuery({ name: 'size', required: false })
 	async getAll(
 		@PaginationDecorator() pagination: Pagination
 	): Promise<PaginationResult<ProductViewDto>> {

@@ -46,7 +46,7 @@ export class AttributeNameController {
 
 	@Get()
 	@ApiQuery({ name: 'page', required: false })
-	@ApiQuery({ name: 'limit', required: false })
+	@ApiQuery({ name: 'size', required: false })
 	async findAll(
 		@PaginationDecorator() pagination: Pagination
 	): Promise<PaginationResult<AttributeNameViewDto>> {

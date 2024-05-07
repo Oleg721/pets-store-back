@@ -11,10 +11,10 @@ export const PaginationDecorator = createParamDecorator(
 		const request: Request = ctx.switchToHttp().getRequest();
 
 		const page = request.query.page;
-		const limit = request.query.limit;
+		const size = request.query.size;
 
 		const pageNum = Number(page);
-		const limitNum = Number(limit);
+		const limitNum = Number(size);
 
 		const take = limitNum || undefined;
 		const skip = (pageNum - 1) * limitNum || undefined;
