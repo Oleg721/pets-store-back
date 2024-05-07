@@ -7,9 +7,10 @@ import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 
 import { User } from 'src/entities';
-import { UsersService } from 'src/user/users.service';
+import { UsersService } from 'src/resources/user/users.service';
 import { SecurityService } from 'src/security/security.service';
 import { LoginDto, RegisterDto } from './dto/auth.dto';
+import { Role } from 'src/entities/user.entity';
 
 @Injectable()
 export class AuthService {
@@ -74,7 +75,7 @@ export class AuthService {
 			firstname: dto.firstname,
 			lastname: dto.lastname,
 			hashedpassword: hash,
-			role: 'user',
+			role: Role.USER,
 			status: 'active',
 		};
 

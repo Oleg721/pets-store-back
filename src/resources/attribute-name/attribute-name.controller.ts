@@ -8,13 +8,19 @@ import {
 	Delete,
 	BadRequestException,
 } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiQuery, ApiTags } from '@nestjs/swagger';
 
 import { AttributeNameService } from './attribute-name.service';
 import { CreateAttributeNameDto } from './dto/create-attribute-name.dto';
 import { UpdateAttributeNameDto } from './dto/update-attribute-name.dto';
 import { AttributeNameMapperProvider } from './attribute-name-mapper.provider';
 import { AttributeNameViewDto } from './dto/view-attribute-name.dto';
+import {
+	Pagination,
+	PaginationDecorator,
+} from 'src/decorators/Pagination.decorator';
+import { AttributeName } from 'src/entities';
+import { PaginationResult } from '../../common/dto/pagination.dto';
 
 @ApiTags('attribute-names')
 @Controller('attribute-names')
@@ -39,9 +45,19 @@ export class AttributeNameController {
 	}
 
 	@Get()
-	async findAll(): Promise<AttributeNameViewDto[]> {
-		const attributeNames = await this.attributeNameService.findAll();
-		return attributeNames.map((an) => this.mapper.entityToViewDto(an));
+	@ApiQuery({ name: 'page', required: false })
+	@ApiQuery({ name: 'size', required: false })
+	async findAll(
+		@PaginationDecorator() pagination: Pagination
+	): Promise<PaginationResult<AttributeNameViewDto>> {
+		const attributeNames = await this.attributeNameService.findAll({
+			...pagination,
+		});
+
+		return this.mapper.entityToViewPaginationDto(
+			attributeNames as [AttributeName[], number],
+			!!pagination
+		);
 	}
 
 	@Get(':id')

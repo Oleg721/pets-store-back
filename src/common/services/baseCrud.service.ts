@@ -19,8 +19,10 @@ export abstract class BaseCrudService<
 		return this._repository.save(createDto);
 	}
 
-	async findAll(options: FindManyOptions<TEntity> = {}): Promise<TEntity[]> {
-		return this._repository.find(options);
+	async findAll(
+		options: FindManyOptions<TEntity> = {}
+	): Promise<[TEntity[], number] | TEntity[]> {
+		return this._repository.findAndCount(options);
 	}
 
 	async findOne(id: number): Promise<TEntity> {

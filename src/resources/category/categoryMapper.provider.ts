@@ -1,6 +1,8 @@
 import { Injectable } from '@nestjs/common';
+
 import { Category, CategoryAttribute } from 'src/entities';
 import { CreateViewDto } from './dto/view-category.dto';
+import { PaginationResult } from 'src/common/dto/pagination.dto';
 
 const transformCategoryAttributes = (
 	categoryAttributes: CategoryAttribute[]
@@ -13,6 +15,18 @@ const transformCategoryAttributes = (
 
 @Injectable()
 export class ProductMapperProvider {
+	EntityToPaginationViewDto(
+		[categories, count]: [categories: Category[], count: number],
+		hasPagination: boolean = true
+	): PaginationResult<CreateViewDto> {
+		const categoriesDto = categories.map((c) => this.EntityToViewDto(c));
+
+		return new PaginationResult<CreateViewDto>(
+			categoriesDto,
+			hasPagination ? count : undefined
+		);
+	}
+
 	EntityToViewDto(category: Category): CreateViewDto {
 		const categoryViewDto = new CreateViewDto();
 		(categoryViewDto.id = category.id),

@@ -5,7 +5,7 @@ import { ConfigModule } from '@nestjs/config';
 
 import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
-import { UsersModule } from 'src/user/users.module';
+import { UsersModule } from 'src/resources/user/users.module';
 import { SecurityModule } from 'src/security/security.module';
 
 @Module({

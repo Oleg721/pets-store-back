@@ -4,14 +4,20 @@ import {
 	Get,
 	NotFoundException,
 	Param,
-	Post
+	Post,
 } from '@nestjs/common';
+import { ApiQuery, ApiTags } from '@nestjs/swagger';
 
+import {
+	Pagination,
+	PaginationDecorator,
+} from 'src/decorators/Pagination.decorator';
 import { ProductService } from './product.service';
 import { ProductViewDto } from './dto/productView.dto';
 import { ProductMapperProvider } from './productMapper.provider';
 import { CreateProductDto } from './dto/create-product.dto';
-import { ApiTags } from '@nestjs/swagger';
+import { PaginationResult } from '../../common/dto/pagination.dto';
+import { Product } from 'src/entities';
 
 @ApiTags('products')
 @Controller('products')
@@ -23,14 +29,20 @@ export class ProductController {
 
 	@Post()
 	create(@Body() createProductDto: CreateProductDto) {
-	  return this.productService.create(createProductDto);
+		return this.productService.create(createProductDto);
 	}
 
 	@Get()
-	async getAll(): Promise<ProductViewDto[]> {
-		const result = await this.productService.findAll();
-		return result.map<ProductViewDto>((prod) =>
-			this.mapper.productToViewDto(prod)
+	@ApiQuery({ name: 'page', required: false })
+	@ApiQuery({ name: 'size', required: false })
+	async getAll(
+		@PaginationDecorator() pagination: Pagination
+	): Promise<PaginationResult<ProductViewDto>> {
+		const products = await this.productService.findAll({ ...pagination });
+
+		return this.mapper.productToViewPaginationDto(
+			products as [Product[], number],
+			!!pagination
 		);
 	}
 
@@ -42,12 +54,12 @@ export class ProductController {
 		}
 		return this.mapper.productToViewDto(product);
 	}
-  
+
 	// @Patch(':id')
 	// update(@Param('id') id: string, @Body() updateTestDto: UpdateTestDto) {
 	//   return this.productService.update(+id, updateTestDto);
 	// }
-  
+
 	// @Delete(':id')
 	// remove(@Param('id') id: string) {
 	//   return this.productService.remove(+id);

@@ -1,6 +1,8 @@
 import { ProductStatus } from 'src/entities/product.entity';
 
 export class ProductViewDto {
+	id: number;
+
 	name: string;
 
 	description: string;
