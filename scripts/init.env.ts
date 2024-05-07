@@ -1,11 +1,15 @@
-const fs = require('fs').promises;
+import { readFileSync, statSync } from 'node:fs';
 const path = require('path');
 
-export async function loadEnvVariables() {
-	const envPath = path.join(__dirname, '/../../.env');
+export function loadEnvVariables() {
+	let envPath = path.join(__dirname, '/../.env');
+	const stats = statSync(envPath, { throwIfNoEntry: false });
+	if (!stats) {
+		envPath = path.join(__dirname, '/../../.env');
+	}
 
 	try {
-		const data = await fs.readFile(envPath, 'utf8');
+		const data = readFileSync(envPath, 'utf8');
 
 		const lines = data.split('\n');
 

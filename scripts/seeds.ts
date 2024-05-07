@@ -1,6 +1,3 @@
-import { DataSource } from 'typeorm';
-
-import configuration from './../config/configuration';
 import { loadEnvVariables } from './init.env';
 // entities
 import { AttributeName } from 'src/entities/attributeName.entity';
@@ -8,6 +5,7 @@ import { Category } from 'src/entities/category.entity';
 import { CategoryAttribute } from 'src/entities/categoryAttribute.entity';
 import { Product } from 'src/entities/product.entity';
 import { ProductAttributeName } from 'src/entities/productAttributeName.entity';
+import { AppDataSource } from './datasource';
 
 // seeds
 const attributeNamesData = [
@@ -63,23 +61,11 @@ const productAttributeNameData = [
   { value: 'white', product: 'fluffy white cat', categoryAttribute: 'color' },
 ];
 
-async function initDataSource() {
-	const dbConf = configuration().database;
-	const dataSource = new DataSource({
-		...dbConf,
-		entities: [__dirname + './../entities/!(base).entity.js'],
-		synchronize: true,
-		logging: true,
-	});
-
-	await dataSource.initialize();
-
-	return dataSource;
-}
 
 async function seedTableData() {
 	try {
-		const dataSource = await initDataSource();
+		
+		const dataSource = await AppDataSource.initialize();
 		console.log('=== Data Source has been initialized! ===');
 
 		const attributeNamesRepo = dataSource.getRepository(AttributeName);
@@ -89,8 +75,12 @@ async function seedTableData() {
 		const productAttributeNameRepo =
 			dataSource.getRepository(ProductAttributeName);
 
-		// STEP 1: set AttributeNames data
+			try{
+						// STEP 1: set AttributeNames data
 		for (const data of attributeNamesData) {
+			const test = await attributeNamesRepo.find()
+			console.log('===data ===', data);
+			console.log('===data ===', test);
 			const existingAttributeName = await attributeNamesRepo.createQueryBuilder('ar')
 				.where('ar.name =:name', { name: data.name })
 				.getOne();
@@ -99,6 +89,11 @@ async function seedTableData() {
 				await attributeNamesRepo.save(newAttributeName);
 			}
 		}
+
+			}catch(e ){
+				console.log('===err ===', e);
+			}
+
 
 		// STEP 2: set Categories data
 		const categoriesMap: { [name: string]: any } = {};
@@ -231,7 +226,5 @@ async function seedTableData() {
 		console.error('=== Error during Data Source initialization ===', error);
 	}
 }
+seedTableData();
 
-loadEnvVariables().then(() => {
-	seedTableData();
-});
