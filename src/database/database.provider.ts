@@ -8,7 +8,7 @@ export const databaseProviders = {
 		const dataSource = new DataSource({
 			...dbConf,
 			entities: [__dirname + '/../entities/!(base).entity.js'],
-			synchronize: true,
+			synchronize: false,
 		});
 		return dataSource.initialize();
 	},
