@@ -43,7 +43,6 @@ export class UsersController {
 		@Param('id') id: number,
 		@Body() data: UpdateUserDto
 	): Promise<UserDto> {
-		console.log('data:', data);
 		return await this.usersService.updateUserById(id, data);
 	}
 
