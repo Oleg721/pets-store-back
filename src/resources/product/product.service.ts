@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 
 import { Product } from 'src/entities';
-import { BaseCrudService } from 'src/shared/services/baseCrud.service';
+import { BaseCrudService } from 'src/common/services/baseCrud.service';
 import { Repository } from 'typeorm';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-test.dto';

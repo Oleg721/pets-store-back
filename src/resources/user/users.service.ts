@@ -4,7 +4,7 @@ import { Repository } from 'typeorm';
 
 import { UpdateUserDto } from './dto/update-user.dto';
 import { RegisterDto } from 'src/auth/dto/auth.dto';
-import { BaseCrudService } from 'src/shared/services/baseCrud.service';
+import { BaseCrudService } from 'src/common/services/baseCrud.service';
 import { User } from 'src/entities';
 
 @Injectable()

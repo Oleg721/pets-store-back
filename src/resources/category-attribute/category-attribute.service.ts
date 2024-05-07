@@ -1,7 +1,7 @@
 import { Inject, Injectable, forwardRef } from '@nestjs/common';
 import { CreateCategoryAttributeDto } from './dto/create-category-attribute.dto';
 import { UpdateCategoryAttributeDto } from './dto/update-category-attribute.dto';
-import { BaseCrudService } from 'src/shared/services/baseCrud.service';
+import { BaseCrudService } from 'src/common/services/baseCrud.service';
 import { CategoryAttribute } from 'src/entities';
 import { Repository } from 'typeorm';
 import { CategoryService } from '../category/category.service';
