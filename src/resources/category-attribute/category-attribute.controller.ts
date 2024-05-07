@@ -7,11 +7,16 @@ import {
 	Param,
 	Delete,
 	Query,
+	ParseBoolPipe,
 } from '@nestjs/common';
 import { CategoryAttributeService } from './category-attribute.service';
 import { CreateCategoryAttributeDto } from './dto/create-category-attribute.dto';
 import { UpdateCategoryAttributeDto } from './dto/update-category-attribute.dto';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiQuery, ApiTags } from '@nestjs/swagger';
+import {
+	Pagination,
+	PaginationDecorator,
+} from 'src/decorators/Pagination.decorator';
 
 @ApiTags('category-attribute')
 @Controller('category-attribute')
@@ -25,11 +30,23 @@ export class CategoryAttributeController {
 		return this.categoryAttributeService.create(createCategoryAttributeDto);
 	}
 
+	@ApiQuery({ name: 'page', required: false })
+	@ApiQuery({ name: 'size', required: false })
+	@ApiQuery({ name: 'with_category', required: false })
+	@ApiQuery({ name: 'with_attribute_name', required: false })
 	@Get()
-	async findAll(@Query('with-relations') hasRelations?: boolean) {
-		return (hasRelations.toString() === "true" )
-			? this.categoryAttributeService.findAllWithCategoryAndAttrName()
-			: this.categoryAttributeService.findAll();
+	async findAll(
+		@PaginationDecorator() pagination: Pagination,
+		@Query('with_category', new ParseBoolPipe({ optional: true }))
+		hasCategoryRelations?: boolean,
+		@Query('with_attribute_name', new ParseBoolPipe({ optional: true }))
+		hasAttributeName?: boolean
+	) {
+		const relations = {
+			category: hasCategoryRelations,
+			attributeName: hasAttributeName,
+		};
+		return this.categoryAttributeService.findAll({ relations, ...pagination });
 	}
 
 	@Get(':id')

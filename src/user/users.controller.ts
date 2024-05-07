@@ -16,7 +16,7 @@ import { RolesGuard } from 'src/guards/roles.guard';
 import { Roles } from 'src/decorators/roles.decorator';
 import { JwtAuthGuard } from 'src/guards/jwt-auth.guard';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { UserRole } from 'src/entities/user.entity';
+import { Role } from 'src/entities/user.entity';
 
 @ApiTags('users')
 @Controller('users')
@@ -38,7 +38,7 @@ export class UsersController {
 
 	@Patch(':id')
 	@UseGuards(JwtAuthGuard, RolesGuard)
-	@Roles([UserRole.ADMIN, UserRole.USER])
+	@Roles([Role.ADMIN, Role.USER])
 	async updateUserById(
 		@Param('id') id: number,
 		@Body() data: UpdateUserDto
@@ -49,7 +49,7 @@ export class UsersController {
 	@Delete(':id')
 	// For an example
 	@UseGuards(JwtAuthGuard, RolesGuard)
-	@Roles([UserRole.USER])
+	@Roles([Role.USER])
 	async deleteUserById(@Param('id') id: number): Promise<void> {
 		return await this.usersService.deleteUserById(id);
 	}

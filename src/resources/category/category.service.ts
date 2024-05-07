@@ -1,7 +1,7 @@
 import { Inject, Injectable, forwardRef } from '@nestjs/common';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
-import { BaseCrudService } from 'src/shared/services/baseCrud.service';
+import { BaseCrudService } from 'src/common/services/baseCrud.service';
 import { Category, CategoryAttribute } from 'src/entities';
 import { Repository, In } from 'typeorm';
 import { AttributeNameService } from '../attribute-name/attribute-name.service';
@@ -47,8 +47,8 @@ export class CategoryService extends BaseCrudService<
 
 		const category = await super.create(createCategoryDto);
 
-		if(!attributeNameIds?.length){
-			return category
+		if (!attributeNameIds?.length) {
+			return category;
 		}
 
 		const attributesNames = await this.attributeNameService.findAll({
@@ -74,15 +74,5 @@ export class CategoryService extends BaseCrudService<
 		});
 
 		return categoryWithRelations;
-	}
-
-	async findAllWithCategoryAttributes(): Promise<Category[]> {
-		return this.categoryRepository.find({
-			relations: {
-				categoryAttributes: {
-					attributeName: true,
-				},
-			},
-		});
 	}
 }
