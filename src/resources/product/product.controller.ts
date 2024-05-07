@@ -6,13 +6,15 @@ import {
 	Param,
 	Post,
 } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiQuery, ApiTags } from '@nestjs/swagger';
 
 import { Pagination, PaginationDecorator } from 'src/decorators/Pagination.decorator';
 import { ProductService } from './product.service';
 import { ProductViewDto } from './dto/productView.dto';
 import { ProductMapperProvider } from './productMapper.provider';
 import { CreateProductDto } from './dto/create-product.dto';
+import { PaginationResult } from '../pagination/dto/pagination.dto';
+import { Product } from 'src/entities';
 
 @ApiTags('products')
 @Controller('products')
@@ -28,13 +30,15 @@ export class ProductController {
 	}
 
 	@Get()
+	@ApiQuery({ name: 'page', required: false })
+	@ApiQuery({ name: 'limit', required: false })
 	async getAll(
-		@PaginationDecorator() options: Pagination
-	): Promise<ProductViewDto[]> {
-		const result = await this.productService.findAll(options);
-		return result.map<ProductViewDto>((prod) =>
-			this.mapper.productToViewDto(prod)
-		);
+		@PaginationDecorator() pagination: Pagination
+	): Promise<PaginationResult<ProductViewDto>> {
+		const [data, count] = await this.productService.findAll({ ...pagination});
+
+		const total = pagination ? count: undefined;
+		return this.mapper.productToViewPaginationDto([data, total] as [Product[], number]);
 	}
 
 	@Get(':id')

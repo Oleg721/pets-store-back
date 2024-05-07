@@ -6,20 +6,18 @@ export interface Pagination {
 	skip?: number;
 }
 
-const defaultItemsLimit = 20;
-
 export const PaginationDecorator = createParamDecorator(
 	(data: unknown, ctx: ExecutionContext) => {
 		const request: Request = ctx.switchToHttp().getRequest();
 
-		const page = request.query.page || 1;
-		const limit = request.query.limit || defaultItemsLimit;
+		const page = request.query.page;
+		const limit = request.query.limit;
 
 		const pageNum = Number(page);
 		const limitNum = Number(limit);
 
-		const take = limitNum > 0 ? limitNum : defaultItemsLimit;
-		const skip = (pageNum - 1) * limitNum;
+		const take = limitNum || undefined;
+		const skip = (pageNum - 1) * limitNum || undefined;
 
 		return {
 			take,

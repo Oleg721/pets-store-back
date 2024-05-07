@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 
 import { Product, ProductAttributeName } from 'src/entities';
 import { ProductViewDto } from './dto/productView.dto';
+import { PaginationResult } from '../pagination/dto/pagination.dto';
 
 const convertAttributesArrayToObject = (
 	arr: ProductAttributeName[]
@@ -15,12 +16,22 @@ const convertAttributesArrayToObject = (
 		return acc;
 	}, {});
 
-interface IProductMapper {
-	productToViewDto(product: Product): ProductViewDto;
-}
-
 @Injectable()
-export class ProductMapperProvider implements IProductMapper {
+export class ProductMapperProvider {
+	productToViewPaginationDto([products, count]: [
+		product: Product[],
+		count: number,
+	]): PaginationResult<ProductViewDto> {
+		const productsDto = products.map((product) => {
+			return this.productToViewDto(product);
+		});
+		const productViewResultDto = new PaginationResult<ProductViewDto>(
+			productsDto,
+			count
+		);
+
+		return productViewResultDto;
+	}
 	productToViewDto(product: Product): ProductViewDto {
 		const productViewDto = new ProductViewDto();
 
