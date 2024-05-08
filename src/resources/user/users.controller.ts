@@ -20,10 +20,13 @@ import { RolesGuard } from 'src/guards/roles.guard';
 import { JwtAuthGuard } from 'src/guards/jwt-auth.guard';
 import { Roles } from 'src/decorators/roles.decorator';
 import { Role } from 'src/entities/user.entity';
+import { CheckSelfGuard } from 'src/guards/check-self.guard';
+import { CheckSelf } from 'src/decorators/check-self.decorator';
 
 @ApiTags('users')
 @Controller('users')
 @ApiBearerAuth('jwt') // Requires JWT authorization
+@UseGuards(JwtAuthGuard, CheckSelfGuard)
 export class UsersController {
 	constructor(
 		private readonly usersService: UsersService,
@@ -52,6 +55,7 @@ export class UsersController {
 	}
 
 	@Patch(':id')
+	@CheckSelf('id')
 	@UseGuards(JwtAuthGuard, RolesGuard)
 	@Roles([Role.ADMIN, Role.USER])
 	async update(
@@ -64,6 +68,7 @@ export class UsersController {
 
 	@Delete(':id')
 	// For an example
+	@CheckSelf('id')
 	@UseGuards(JwtAuthGuard, RolesGuard)
 	@Roles([Role.USER])
 	remove(@Param('id') id: number): Promise<void> {
