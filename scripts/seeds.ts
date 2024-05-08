@@ -75,12 +75,8 @@ async function seedTableData() {
 		const productAttributeNameRepo =
 			dataSource.getRepository(ProductAttributeName);
 
-			try{
 						// STEP 1: set AttributeNames data
 		for (const data of attributeNamesData) {
-			const test = await attributeNamesRepo.find()
-			console.log('===data ===', data);
-			console.log('===data ===', test);
 			const existingAttributeName = await attributeNamesRepo.createQueryBuilder('ar')
 				.where('ar.name =:name', { name: data.name })
 				.getOne();
@@ -89,11 +85,6 @@ async function seedTableData() {
 				await attributeNamesRepo.save(newAttributeName);
 			}
 		}
-
-			}catch(e ){
-				console.log('===err ===', e);
-			}
-
 
 		// STEP 2: set Categories data
 		const categoriesMap: { [name: string]: any } = {};

@@ -1,15 +1,16 @@
-import { readFileSync, statSync } from 'node:fs';
+const fs = require('node:fs');
 const path = require('path');
+
 
 export function loadEnvVariables() {
 	let envPath = path.join(__dirname, '/../.env');
-	const stats = statSync(envPath, { throwIfNoEntry: false });
+	const stats = fs.statSync(envPath, { throwIfNoEntry: false });
 	if (!stats) {
 		envPath = path.join(__dirname, '/../../.env');
 	}
 
 	try {
-		const data = readFileSync(envPath, 'utf8');
+		const data = fs.readFileSync(envPath, 'utf8');
 
 		const lines = data.split('\n');
 
