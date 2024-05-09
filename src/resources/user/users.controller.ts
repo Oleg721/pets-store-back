@@ -5,8 +5,9 @@ import {
 	Delete,
 	Param,
 	Patch,
+	UseGuards,
 } from '@nestjs/common';
-import { ApiQuery, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiQuery, ApiTags } from '@nestjs/swagger';
 
 import { UsersService } from './users.service';
 import { Pagination, PaginationDecorator } from 'src/decorators/Pagination.decorator';
@@ -15,9 +16,17 @@ import { UserMapperProvider } from './userMapper.provider';
 import { UserViewDto } from './dto/view-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from 'src/entities';
+import { RolesGuard } from 'src/guards/roles.guard';
+import { JwtAuthGuard } from 'src/guards/jwt-auth.guard';
+import { Roles } from 'src/decorators/roles.decorator';
+import { Role } from 'src/entities/user.entity';
+import { CheckSelfGuard } from 'src/guards/check-self.guard';
+import { CheckSelf } from 'src/decorators/check-self.decorator';
 
 @ApiTags('users')
 @Controller('users')
+@ApiBearerAuth('jwt') // Requires JWT authorization
+@UseGuards(JwtAuthGuard, CheckSelfGuard)
 export class UsersController {
 	constructor(
 		private readonly usersService: UsersService,
@@ -27,6 +36,7 @@ export class UsersController {
 	@Get() // /users
 	@ApiQuery({ name: 'page', required: false })
 	@ApiQuery({ name: 'size', required: false })
+	@UseGuards(JwtAuthGuard) // Protect controller with JwtAuthGuard
 	async getAll(
 		@PaginationDecorator() pagination: Pagination
 	): Promise<PaginationResult<UserViewDto>> {
@@ -45,6 +55,9 @@ export class UsersController {
 	}
 
 	@Patch(':id')
+	@CheckSelf('id')
+	@UseGuards(JwtAuthGuard, RolesGuard)
+	@Roles([Role.ADMIN, Role.USER])
 	async update(
 		@Param('id') id: number,
 		@Body() data: UpdateUserDto
@@ -54,6 +67,10 @@ export class UsersController {
 	}
 
 	@Delete(':id')
+	// For an example
+	@CheckSelf('id')
+	@UseGuards(JwtAuthGuard, RolesGuard)
+	@Roles([Role.USER])
 	remove(@Param('id') id: number): Promise<void> {
 		return this.usersService.remove(id);
 	}
