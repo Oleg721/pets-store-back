@@ -9,11 +9,14 @@ export class CreateProductDto {
 	description: string;
 
     @ApiProperty()
-	status: ProductStatus;
+	status?: ProductStatus;
 
     @ApiProperty()
 	price: number;
     
     @ApiProperty()
 	categoryId: number;
+
+    @ApiProperty()
+    productAttributes?: Record<string, string | number | Date>
 }

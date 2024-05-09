@@ -28,15 +28,6 @@ export class CategoryService extends BaseCrudService<
 	): Promise<CreateCategoryDto & Category> {
 		const { attributeNameIds, ...createCategoryDto } = createDto;
 
-		const rootParent = await this.categoryRepository.findOneBy({
-			id: createCategoryDto.parentId,
-			parentId: null,
-		});
-
-		if (!rootParent) {
-			return null;
-		}
-
 		const isNameExist = await this.categoryRepository.existsBy({
 			name: createCategoryDto.name,
 		});
@@ -51,7 +42,7 @@ export class CategoryService extends BaseCrudService<
 			return category;
 		}
 
-		const attributesNames = await this.attributeNameService.findAll({
+		const [attributesNames] = await this.attributeNameService.findAll({
 			where: { id: In(attributeNameIds) },
 		});
 

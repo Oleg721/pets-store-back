@@ -16,12 +16,12 @@ export class RegisterDto {
 	@ApiProperty()
 	username: string;
 
-	@MinLength(6, { message: 'Firstname cannot be less then 6 characters' })
+	@MinLength(2, { message: 'Firstname cannot be less then 6 characters' })
 	@IsString()
 	@ApiProperty()
 	firstname: string;
 
-	@MinLength(6, { message: 'Lastname cannot be less then 6 characters' })
+	@MinLength(2, { message: 'Lastname cannot be less then 6 characters' })
 	@IsString()
 	@ApiProperty()
 	lastname: string;

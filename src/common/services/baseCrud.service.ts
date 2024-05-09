@@ -21,11 +21,11 @@ export abstract class BaseCrudService<
 
 	async findAll(
 		options: FindManyOptions<TEntity> = {}
-	): Promise<[TEntity[], number] | TEntity[]> {
+	): Promise<[TEntity[], number]> {
 		return this._repository.findAndCount(options);
 	}
 
-	async findOne(id: number): Promise<TEntity> {
+	async findOne(id: number, option?: FindOptionsWhere<TEntity> ): Promise<TEntity> {
 		const entity = await this._repository.findOneBy({
 			id,
 		} as FindOptionsWhere<TEntity>);
