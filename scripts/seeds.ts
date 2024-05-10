@@ -1,221 +1,407 @@
-import { loadEnvVariables } from './init.env';
-// entities
-import { AttributeName } from 'src/entities/attributeName.entity';
-import { Category } from 'src/entities/category.entity';
-import { CategoryAttribute } from 'src/entities/categoryAttribute.entity';
-import { Product } from 'src/entities/product.entity';
-import { ProductAttributeName } from 'src/entities/productAttributeName.entity';
-import { AppDataSource } from './datasource';
+import fetch from 'node-fetch';
+import { RegisterDto } from 'src/auth/dto/auth.dto';
+import { CreateAttributeNameDto } from 'src/resources/attribute-name/dto/create-attribute-name.dto';
+import { CreateCategoryDto } from 'src/resources/category/dto/create-category.dto';
+import { CreateProductDto } from 'src/resources/product/dto/create-product.dto';
+// const fetch = require('node-fetch');
 
 // seeds
+const usersData = [
+	{
+		username: 'Shinsu',
+		firstname: 'Shawna',
+		lastname: 'Alvarez',
+		password: 'qwe123',
+		email: 'qqq@gmail.com',
+	},
+	{
+		username: 'Derick',
+		firstname: 'Liam',
+		lastname: 'Davis',
+		password: 'qwe123',
+		email: 'qqq1@gmail.com',
+	},
+	{
+		username: 'Latoya',
+		firstname: 'Louella',
+		lastname: 'Black',
+		password: 'qwe123',
+		email: 'qqq2@gmail.com',
+	},
+];
+
 const attributeNamesData = [
-  { name: 'sex', type: 'string' },
-  { name: 'birthDate', type: 'string' },
-  { name: 'color', type: 'string' },
-  { name: 'weight', type: 'integer' },
-  { name: 'speed', type: 'integer' },
-  { name: 'breed', type: 'string' },
-  { name: 'price', type: 'integer' },
-  { name: 'age', type: 'integer' },
-  { name: 'material', type: 'string' },
+	{ name: 'color', type: 'string' },
+	{ name: 'sex', type: 'string' },
+	{ name: 'birthDate', type: 'string' },
+	{ name: 'breed', type: 'string' },
+	{ name: 'size', type: 'string' },
+	{ name: 'weight', type: 'numeric' },
+	{ name: 'brand', type: 'string' },
+	{ name: 'material', type: 'string' },
+	{ name: 'packSize', type: 'string' },
+	{ name: 'lifestage', type: 'string' },
 ];
+const petAttributeNames = [
+	'color',
+	'sex',
+	'birthDate',
+	'bread',
+	'size',
+	'lifestage',
+];
+const accessoriesAttributeNames = ['color', 'brand', 'material', 'lifestage'];
+const foodAttributeNames = ['brand', 'weight', 'lifestage', 'packSize'];
+
 const categoriesData = [
-  { name: 'animal', description: 'Description for animal category' },
-  { name: 'accessories', description: 'Description for accessories category' },
-  { name: 'cat', description: 'Description for cat category', parentName: 'animal' },
-  { name: 'dog', description: 'Description for dog category', parentName: 'animal' },
-  { name: 'muzzle', description: 'Description for muzzle category', parentName: 'accessories' },
-  { name: 'hamster', description: 'Description for hamster category', parentName: 'animal' },
-  { name: 'parrot', description: 'Description for parrot category', parentName: 'animal' },
-  { name: 'squirrel', description: 'Description for squirrel category', parentName: 'animal' },
-];
-const productsData = [
-  { name: 'fluffy white cat', description: 'Description for fluffy white cat product', price: 10, category: 'cat' },
-  { name: 'red parrot', description: 'Description for red parrot product', price: 15, category: 'animal' },
-  { name: 'tight muzzle', description: 'Description for tight muzzle product', price: 15, category: 'accessories' },
-  { name: 'lick map', description: 'Description for lick map product', price: 20, category: 'accessories' },
-  { name: 'cage', description: 'Description for cage product', price: 25, category: 'accessories' },
-  { name: 'little hamster', description: 'Description for little hamster product', price: 5, category: 'animal' },
-  { name: 'bear toy', description: 'Description for bear toy product', price: 30, category: 'accessories' },
-  { name: 'akita inu', description: 'Description for bear toy product', price: 130, category: 'dog' },
-];
-const categoryAttributeData = [
-  { category: 'animal', attributeName: 'sex' },
-  { category: 'animal', attributeName: 'birthDate' },
-  { category: 'animal', attributeName: 'speed' },
-  { category: 'cat', attributeName: 'breed' },
-  { category: 'dog', attributeName: 'breed' },
-  { category: 'animal', attributeName: 'price' },
-  { category: 'animal', attributeName: 'color' },
-  { category: 'animal', attributeName: 'weight' },
-  { category: 'accessories', attributeName: 'color' },
-  { category: 'accessories', attributeName: 'price' },
-];
-const productAttributeNameData = [
-  { value: '50', product: 'red parrot', categoryAttribute: 'weight' },
-  { value: '500', product: 'red parrot', categoryAttribute: 'price' },
-  { value: 'red', product: 'red parrot', categoryAttribute: 'color' },
-  { value: '60', product: 'akita inu', categoryAttribute: 'weight' },
-  { value: 'malamute', product: 'akita inu', categoryAttribute: 'color' },
-  { value: '1', product: 'little hamster', categoryAttribute: 'weight' }, // ?
-  { value: 'white', product: 'fluffy white cat', categoryAttribute: 'color' },
+	{
+		name: 'pet',
+		description: 'Description for animal category',
+		parentId: null,
+		children: [
+			{
+				name: 'cat',
+				description: 'Description for cat category',
+				attributeNames: petAttributeNames,
+			},
+			{
+				name: 'dog',
+				description: 'Description for dog category',
+				attributeNames: petAttributeNames,
+			},
+			{
+				name: 'rabbit',
+				description: 'Description for rabbit category',
+				attributeNames: petAttributeNames,
+			},
+			{
+				name: 'birds',
+				description: 'Description for birds category',
+				attributeNames: petAttributeNames,
+			},
+		],
+	},
+	{
+		name: 'accessories',
+		description: 'Description for accessories category',
+		parentId: null,
+		children: [
+			{
+				name: 'toys',
+				description: 'Description for toys category',
+				attributeNames: accessoriesAttributeNames,
+			},
+			{
+				name: 'plates',
+				description: 'Description for plates category',
+				attributeNames: accessoriesAttributeNames,
+			},
+			{
+				name: 'crates',
+				description: 'Description for crates category',
+				attributeNames: accessoriesAttributeNames,
+			},
+			{
+				name: 'beds',
+				description: 'Description for beds category',
+				attributeNames: accessoriesAttributeNames,
+			},
+			{
+				name: 'leash',
+				description: 'Description for leash category',
+				attributeNames: accessoriesAttributeNames,
+			},
+			{
+				name: 'collars',
+				description: 'Description for collars category',
+				attributeNames: accessoriesAttributeNames,
+			},
+			{
+				name: 'muzzle',
+				description: 'Description for muzzle category',
+				attributeNames: accessoriesAttributeNames,
+			},
+			{
+				name: 'bandanas',
+				description: 'Description for bandanas category',
+				attributeNames: accessoriesAttributeNames,
+			},
+			{
+				name: 'cages',
+				description: 'Description for cage category',
+				attributeNames: accessoriesAttributeNames,
+			},
+		],
+	},
+	{
+		name: 'food',
+		description: 'Description for food category',
+		parentId: null,
+		children: [
+			{
+				name: 'Dog Food',
+				description: 'Description for Dog Food category',
+				attributeNames: foodAttributeNames,
+			},
+			{
+				name: 'Cat Food',
+				description: 'Description for Cat Food category',
+				attributeNames: foodAttributeNames,
+			},
+			{
+				name: 'Fish Food',
+				description: 'Description for Fish Food category',
+				attributeNames: foodAttributeNames,
+			},
+			{
+				name: 'Bird Food',
+				description: 'Description for Bird Food category',
+				attributeNames: foodAttributeNames,
+			},
+			{
+				name: 'Reptile Food',
+				description: 'Description for Reptile Food category',
+				attributeNames: foodAttributeNames,
+			},
+			{
+				name: 'Exotic Pet Food',
+				description: 'Description for Exotic Pet Food category',
+				attributeNames: foodAttributeNames,
+			},
+		],
+	},
 ];
 
+const getProductsData = (categoryMap) => [
+	{
+		name: 'fluffy',
+		description: 'Description for fluffy white cat product',
+		price: 10,
+		categoryId: categoryMap['cat'],
+		productAttributes: {
+			color: 'white',
+			sex: 'female',
+			birthDate: '2024-01-09 22:51:00.055698',
+			size: 'small',
+		},
+	},
+	{
+		name: 'red parrot',
+		description: 'Description for red parrot product',
+		price: 15,
+		categoryId: categoryMap['birds'],
+		productAttributes: {
+			color: 'red',
+			sex: 'male',
+			birthDate: '2024-02-09 22:51:00.055698',
+			size: 'small',
+		},
+	},
+	{
+		name: 'tight muzzle',
+		description: 'Description for tight muzzle product',
+		price: 15,
+		categoryId: categoryMap['muzzle'],
+		productAttributes: {
+			color: 'black',
+			brand: 'nike',
+			material: 'polyester',
+			lifestage: 'yang',
+		},
+	},
+	{
+		name: 'cage',
+		description: 'Description for cage product',
+		price: 25,
+		categoryId: categoryMap['cages'],
+		productAttributes: {
+			color: 'gray',
+			brand: 'gucci',
+			material: 'gold',
+			lifestage: 'any',
+		},
+	},
+	{
+		name: 'bear toy',
+		description: 'Description for bear toy product',
+		price: 30,
+		categoryId: categoryMap['toys'],
+		productAttributes: {
+			color: 'yellow',
+			brand: 'hugo',
+			material: 'rubber',
+			lifestage: 'any',
+		},
+	},
+	{
+		name: 'akita inu',
+		description: 'Description for bear toy product',
+		price: 130,
+		categoryId: categoryMap['dog'],
+		productAttributes: {
+			color: 'braun',
+			sex: 'male',
+			birthDate: '2023-11-09 22:51:00.055698',
+			size: 'big',
+		},
+	},
+	{
+		name: 'Doggits',
+		description: 'Description for Doggits product',
+		price: 0.5,
+		categoryId: categoryMap['Dog Food'],
+		productAttributes: {
+			brand: 'dog food maker',
+			weight: '0.2',
+			lifestage: 'any',
+			packSize: 'S',
+		},
+	},
+	{
+		name: 'chupacumpra',
+		description: 'Description for chupacumpra product',
+		price: 14.14,
+		categoryId: categoryMap['Exotic Pet Food'],
+		productAttributes: {
+			brand: 'mazuri',
+			weight: '11',
+			lifestage: 'old',
+			packSize: 'L',
+		},
+	},
+];
 
-async function seedTableData() {
+const apiUrl = 'http://localhost:3000/api/v1';
+const resources = {
+	products: 'products',
+	categories: 'categories',
+	attributeNames: 'attribute-names',
+	categoryAttribute: 'category-attribute',
+	productAttributeNames: 'product-attribute-names',
+	auth: 'auth/register',
+};
+
+const sendFetch = async (
+	url,
+	options: { method?: string; body?: any } = {}
+) => {
 	try {
-		
-		const dataSource = await AppDataSource.initialize();
-		console.log('=== Data Source has been initialized! ===');
-
-		const attributeNamesRepo = dataSource.getRepository(AttributeName);
-		const categoriesRepo = dataSource.getRepository(Category);
-		const productsRepo = dataSource.getRepository(Product);
-		const categoryAttributeRepo = dataSource.getRepository(CategoryAttribute);
-		const productAttributeNameRepo =
-			dataSource.getRepository(ProductAttributeName);
-
-						// STEP 1: set AttributeNames data
-		for (const data of attributeNamesData) {
-			const existingAttributeName = await attributeNamesRepo.createQueryBuilder('ar')
-				.where('ar.name =:name', { name: data.name })
-				.getOne();
-			if (!existingAttributeName) {
-				const newAttributeName = attributeNamesRepo.create(data);
-				await attributeNamesRepo.save(newAttributeName);
-			}
-		}
-
-		// STEP 2: set Categories data
-		const categoriesMap: { [name: string]: any } = {};
-
-		for (const data of categoriesData) {
-			let existingCategory = await categoriesRepo.createQueryBuilder('c')
-				.where('c.name = :name', { name: data.name })
-				.getOne();
-
-			if (!existingCategory) {
-				existingCategory = categoriesRepo.create({
-					name: data.name,
-					description: data.description,
-				});
-			} else {
-				existingCategory.description = data.description;
-			}
-			await categoriesRepo.save(existingCategory);
-			categoriesMap[data.name] = existingCategory;
-		}
-
-		// Add parent-child relationships based on parent names
-		for (const data of categoriesData) {
-			const category = categoriesMap[data.name];
-
-			if (data.parentName) {
-				const parentCategory = categoriesMap[data.parentName];
-
-				if (parentCategory) {
-					category.parent = parentCategory;
-					await categoriesRepo.save(category);
-				}
-			}
-		}
-
-		// STEP 3: set Products data
-		const productsMap: { [name: string]: any } = {};
-
-		for (const data of productsData) {
-			let existingProduct = await productsRepo.createQueryBuilder('p')
-				.where('p.name = :name', { name: data.name })
-				.getOne();
-
-			if (!existingProduct) {
-				existingProduct = productsRepo.create({
-					name: data.name,
-					description: data.description,
-					price: data.price,
-				});
-			} else {
-				existingProduct.description = data.description;
-			}
-			await productsRepo.save(existingProduct);
-			productsMap[data.name] = existingProduct;
-		}
-
-		// Add category relationships based on category names
-		for (const data of productsData) {
-			const product = productsMap[data.name];
-
-			if (data.category) {
-				let existingCategory = await categoriesRepo.createQueryBuilder('c')
-					.where('c.name = :name', { name: data.category })
-					.getOne();
-
-				if (existingCategory) {
-					product.category = existingCategory;
-					await productsRepo.save(product);
-				}
-			}
-		}
-
-		// STEP 4: set CategoryAttributes data
-		for (const data of categoryAttributeData) {
-			const existingCategory = await categoriesRepo.createQueryBuilder('c')
-				.where('c.name = :name', { name: data.category })
-				.getOne();
-
-			const existingAttributeName = await attributeNamesRepo.createQueryBuilder('an')
-				.where('an.name = :name', { name: data.attributeName })
-				.getOne();
-
-			const existingCARow = await categoryAttributeRepo.createQueryBuilder('ca')
-				.where('ca.categoryId = :caid', { caid: existingCategory.id })
-				.andWhere('ca.attributeNameId = :id', { id: existingAttributeName.id })
-				.getOne();
-
-			if (!existingCARow) {
-				const newRow = categoryAttributeRepo.create({
-					category: existingCategory,
-					attributeName: existingAttributeName,
-				});
-				await categoryAttributeRepo.save(newRow);
-			}
-		}
-
-		// STEP 5: set ProductAttributeNames data
-		for (const data of productAttributeNameData) {
-			const product = await productsRepo.createQueryBuilder('pr')
-				.where('pr.name = :name', { name: data.product })
-				.getOne();
-			const attribute = await attributeNamesRepo.createQueryBuilder('a')
-				.where('a.name = :name', { name: data.categoryAttribute })
-				.getOne();
-
-			const attributeCategory = await categoryAttributeRepo.createQueryBuilder('ca')
-				.where('ca.attributeNameId = :id', { id: attribute.id })
-				.getOne();
-
-			if (product && attribute) {
-				const existingRow = await productAttributeNameRepo.createQueryBuilder('p')
-					.where('p.productId = :pid', { pid: product.id })
-					.andWhere('p.categoryAttributeId = :cid', { cid: attributeCategory.id })
-					.andWhere('p.value = :value', { value: data.value })
-					.getOne();
-
-				if (!existingRow) {
-					const newRow = productAttributeNameRepo.create({
-						product: product,
-						categoryAttribute: attributeCategory,
-						value: data.value,
-					});
-					await productAttributeNameRepo.save(newRow);
-				}
-			}
-		}
-
-		console.log('=== Mock data generated! ===');
-	} catch (error) {
-		console.error('=== Error during Data Source initialization ===', error);
+		const res = await fetch(url, {
+			method: options.method || 'GET',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			body: options.body ? JSON.stringify(options.body) : null,
+		});
+		return res.json();
+	} catch (e) {
+		return null;
 	}
-}
-seedTableData();
+};
 
+const attributeNamesMap = {};
+const categoryMap = {};
+
+const addUsersToDB = async (users: RegisterDto[]) => {
+	const promises = users.map((user) =>
+		sendFetch(`${apiUrl}/${resources.auth}`, {
+			body: user,
+			method: 'POST',
+		})
+	);
+	const result = await Promise.all(promises);
+	console.log('=======add Users result', result);
+};
+
+const addAttributeNameToDB = async (
+	attributeNames: CreateAttributeNameDto[]
+) => {
+	const promises = attributeNames.map((an) =>
+		sendFetch(`${apiUrl}/${resources.attributeNames}`, {
+			body: an,
+			method: 'POST',
+		})
+	);
+	const result = await Promise.all(promises);
+	console.log('=======add AttributeName result', result);
+};
+
+const saveAttributeNamesFromDB = async () => {
+	const data = await sendFetch(`${apiUrl}/${resources.attributeNames}`);
+	data?.content.forEach((an) => {
+		attributeNamesMap[an.name] = an.id;
+	});
+};
+
+const saveCategoriesFromDB = async () => {
+	const data = await sendFetch(`${apiUrl}/${resources.categories}`);
+	data?.content.forEach((an) => {
+		categoryMap[an.name] = an.id;
+	});
+};
+
+const addCategoriesToDB = async (
+	categoriesTree: (CreateCategoryDto & {
+		children: (Partial<CreateCategoryDto> & { attributeNames: string[] })[];
+	})[]
+) => {
+	const promisesForRootCategories = categoriesTree.map(
+		async ({ children: _, ...rootCategory }) =>
+			sendFetch(`${apiUrl}/${resources.categories}`, {
+				body: rootCategory,
+				method: 'POST',
+			})
+	);
+	const rootCategoryData = await Promise.all(promisesForRootCategories);
+	console.log('=======add root category result', rootCategoryData);
+
+	await saveCategoriesFromDB();
+
+	const childrenCategories = categoriesTree.reduce((acc, rc) => {
+		if (!categoryMap[rc.name]) {
+			return acc;
+		}
+
+		const children = rc.children.map(({ attributeNames, ...child }) => ({
+			...child,
+			parentId: categoryMap[rc.name],
+			attributeNameIds: attributeNames
+				.map((name) => attributeNamesMap[name])
+				.filter((e) => e),
+		}));
+		return [...acc, ...children];
+	}, []);
+
+	const childrenCategoriesResult = [];
+	for (const childCategory of childrenCategories) {
+		const result = await sendFetch(`${apiUrl}/${resources.categories}`, {
+			body: childCategory,
+			method: 'POST',
+		});
+		childrenCategoriesResult.push(result);
+	}
+
+	console.log('===childrenCategories', childrenCategoriesResult);
+};
+
+const addProductsToDB = async (products: CreateProductDto[]) => {
+	const promises = products.map((product) =>
+		sendFetch(`${apiUrl}/${resources.products}`, {
+			body: product,
+			method: 'POST',
+		})
+	);
+	const result = await Promise.all(promises);
+	console.log('=======add product result', result);
+};
+
+const runSeeds = async () => {
+	await addUsersToDB(usersData);
+	await addAttributeNameToDB(attributeNamesData);
+	await saveAttributeNamesFromDB();
+	await addCategoriesToDB(categoriesData);
+	await saveCategoriesFromDB();
+	await addProductsToDB(getProductsData(categoryMap))
+};
+
+runSeeds();
