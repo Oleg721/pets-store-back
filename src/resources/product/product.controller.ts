@@ -4,7 +4,9 @@ import {
 	Get,
 	NotFoundException,
 	Param,
+	ParseBoolPipe,
 	Post,
+	Query,
 } from '@nestjs/common';
 import { ApiQuery, ApiTags } from '@nestjs/swagger';
 
@@ -18,6 +20,9 @@ import { ProductMapperProvider } from './productMapper.provider';
 import { CreateProductDto } from './dto/create-product.dto';
 import { PaginationResult } from '../../common/dto/pagination.dto';
 import { Product } from 'src/entities';
+import { FindOptionsWhere } from 'typeorm';
+import { Filters } from 'src/decorators/Filters.decorator';
+import { filtersApiQuerySchema } from 'src/common/swagger/filters.schema';
 
 @ApiTags('products')
 @Controller('products')
@@ -35,15 +40,30 @@ export class ProductController {
 	@Get()
 	@ApiQuery({ name: 'page', required: false })
 	@ApiQuery({ name: 'size', required: false })
+	@ApiQuery({ name: 'with-category', required: false })
+	@ApiQuery({ name: 'with-attributes', required: false })
+	@ApiQuery(filtersApiQuerySchema)
 	async getAll(
-		@PaginationDecorator() pagination: Pagination
+		@PaginationDecorator() pagination: Pagination,
+		@Filters() filters: FindOptionsWhere<Product>,
+		@Query('with-category', new ParseBoolPipe({ optional: true }))
+		withCategory: boolean,
+		@Query('with-attributes', new ParseBoolPipe({ optional: true }))
+		withAttributes: boolean
 	): Promise<PaginationResult<ProductViewDto>> {
-		const products = await this.productService.findAll({ ...pagination });
+		const products = await this.productService.findAll({
+			...pagination,
+			relations: {
+				productAttributeName: withAttributes && {
+					categoryAttribute: {
+						attributeName: true,
+					},
+				},
+				category: withCategory,
+			},
+		});
 
-		return this.mapper.productToViewPaginationDto(
-			products as [Product[], number],
-			!!pagination
-		);
+		return this.mapper.productToViewPaginationDto(products, !!pagination);
 	}
 
 	@Get(':id')
