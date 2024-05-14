@@ -7,15 +7,10 @@ enum ProductStatus {
 
 class CreateProductDto {
 	name: string;
-
 	description: string;
-
 	status?: ProductStatus;
-
 	price: number;
-
 	categoryId: number;
-
 	productAttributes?: Record<string, string | number | Date>;
 }
 
@@ -265,7 +260,7 @@ const petBreadByCategory = {
 		'Scottish Fold',
 		'Abyssinian',
 		'Birman',
-		'Russian Blue',
+		'Ukrainian Yellow',
 		'Siberian',
 		'Oriental',
 		'American Shorthair',
@@ -305,6 +300,8 @@ const petBreadByCategory = {
 		'Australian Shepherd',
 		'Cavalier King Charles Spaniel',
 		'Miniature Schnauzer',
+		'Akita Inu',
+		'Golden Retriever',
 		'Pomeranian',
 		'Shetland Sheepdog',
 		'Boston Terrier',
