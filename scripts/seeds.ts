@@ -3,7 +3,7 @@ import { RegisterDto } from 'src/auth/dto/auth.dto';
 import { CreateAttributeNameDto } from 'src/resources/attribute-name/dto/create-attribute-name.dto';
 import { CreateCategoryDto } from 'src/resources/category/dto/create-category.dto';
 import { CreateProductDto } from 'src/resources/product/dto/create-product.dto';
-// const fetch = require('node-fetch');
+import { generateProducts } from './product-generator';
 
 // seeds
 const usersData = [
@@ -46,9 +46,8 @@ const petAttributeNames = [
 	'color',
 	'sex',
 	'birthDate',
-	'bread',
-	'size',
-	'lifestage',
+	'breed',
+	'size'
 ];
 const accessoriesAttributeNames = ['color', 'brand', 'material', 'lifestage'];
 const foodAttributeNames = ['brand', 'weight', 'lifestage', 'packSize'];
@@ -391,8 +390,10 @@ const addProductsToDB = async (products: CreateProductDto[]) => {
 			method: 'POST',
 		})
 	);
-	const result = await Promise.all(promises);
-	console.log('=======add product result', result);
+	for(const promise of promises){
+		await promise
+	}
+
 };
 
 const runSeeds = async () => {
@@ -401,7 +402,14 @@ const runSeeds = async () => {
 	await saveAttributeNamesFromDB();
 	await addCategoriesToDB(categoriesData);
 	await saveCategoriesFromDB();
-	await addProductsToDB(getProductsData(categoryMap))
+
+	const petProducts = generateProducts(categoriesData.find(e => e.name === "pet").children, categoryMap, "pet", 200)
+
+	const accessoriesProducts = generateProducts(categoriesData.find(e => e.name === "accessories").children, categoryMap, "accessories", 100)
+
+	const foodAProducts = generateProducts(categoriesData.find(e => e.name === "food").children, categoryMap, "food", 100)
+
+	await addProductsToDB([...petProducts, ...accessoriesProducts, ...foodAProducts])
 };
 
 runSeeds();
