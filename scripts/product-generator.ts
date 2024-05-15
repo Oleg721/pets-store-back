@@ -578,7 +578,7 @@ function fillAttributes(attributesArr: any[], categoryName, parentCategory) {
 					return;
 				}
 				case 'packSize': {
-					attributes.weight = getRandomElement([
+					attributes.packSize = getRandomElement([
 						'cans',
 						'large bags',
 						'multipacks',
