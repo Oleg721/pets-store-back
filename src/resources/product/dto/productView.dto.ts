@@ -22,9 +22,4 @@ export class ProductViewDto {
 	>;
 
 	productAttributes?: { [key: string]: string | number | Date };
-
-	category: Omit<
-		CreateViewDto,
-		'children' | 'products' | 'categoryAttributes' | 'parent'
-	>;
 }
