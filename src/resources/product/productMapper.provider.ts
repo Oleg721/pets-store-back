@@ -52,6 +52,15 @@ export class ProductMapperProvider {
 			);
 		}
 
+		if (product.category) {
+			productViewDto.category = {
+				id: product.category.id,
+				description: product.category.description,
+				name: product.category.name,
+				parentId: product.category.parentId,
+			};
+		}
+
 		return productViewDto;
 	}
 }
