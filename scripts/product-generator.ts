@@ -248,7 +248,7 @@ const petFoods = [
 	'Treats Ahoy!',
 ];
 
-const petBreadByCategory = {
+const petBreedByCategory = {
 	cat: [
 		'Maine Coon',
 		'Siamese',
@@ -542,10 +542,10 @@ function fillAttributes(attributesArr: any[], categoryName, parentCategory) {
 					attributes.birthDate = getRandomDate('2019-01-01', '2024-03-31');
 					return;
 				}
-				case 'bread': {
-					if (petBreadByCategory[categoryName]) {
-						attributes.bread = getRandomElement(
-							petBreadByCategory[categoryName]
+				case 'breed': {
+					if (petBreedByCategory[categoryName]) {
+						attributes.breed = getRandomElement(
+							petBreedByCategory[categoryName]
 						);
 					}
 					return;
