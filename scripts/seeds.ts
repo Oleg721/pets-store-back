@@ -46,7 +46,7 @@ const petAttributeNames = [
 	'color',
 	'sex',
 	'birthDate',
-	'bread',
+	'breed',
 	'size'
 ];
 const accessoriesAttributeNames = ['color', 'brand', 'material', 'lifestage'];
@@ -390,7 +390,9 @@ const addProductsToDB = async (products: CreateProductDto[]) => {
 			method: 'POST',
 		})
 	);
-	const result = await Promise.all(promises);
+	for(const promise of promises){
+		await promise
+	}
 
 };
 
@@ -406,8 +408,8 @@ const runSeeds = async () => {
 	const accessoriesProducts = generateProducts(categoriesData.find(e => e.name === "accessories").children, categoryMap, "accessories", 100)
 
 	const foodAProducts = generateProducts(categoriesData.find(e => e.name === "food").children, categoryMap, "food", 100)
-	
-	await addProductsToDB([...getProductsData(categoryMap),...petProducts, ...accessoriesProducts, ...foodAProducts])
+
+	await addProductsToDB([...petProducts, ...accessoriesProducts, ...foodAProducts])
 };
 
 runSeeds();

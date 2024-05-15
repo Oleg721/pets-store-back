@@ -248,7 +248,7 @@ const petFoods = [
 	'Treats Ahoy!',
 ];
 
-const petBreadByCategory = {
+const petBreedByCategory = {
 	cat: [
 		'Maine Coon',
 		'Siamese',
@@ -543,9 +543,9 @@ function fillAttributes(attributesArr: any[], categoryName, parentCategory) {
 					return;
 				}
 				case 'breed': {
-					if (petBreadByCategory[categoryName]) {
+					if (petBreedByCategory[categoryName]) {
 						attributes.breed = getRandomElement(
-							petBreadByCategory[categoryName]
+							petBreedByCategory[categoryName]
 						);
 					}
 					return;
@@ -578,7 +578,7 @@ function fillAttributes(attributesArr: any[], categoryName, parentCategory) {
 					return;
 				}
 				case 'packSize': {
-					attributes.weight = getRandomElement([
+					attributes.packSize = getRandomElement([
 						'cans',
 						'large bags',
 						'multipacks',
