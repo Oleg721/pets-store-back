@@ -13,7 +13,7 @@ class PaginationParams {
 	take: number;
 
 	@IsInt()
-	@Min(0)
+	@Min(1)
 	@IsOptional()
 	skip: number;
 }
@@ -38,7 +38,7 @@ export const PaginationDecorator = createParamDecorator(
 
 		return {
 			take: paginationParams.take,
-			skip: paginationParams.skip,
+			skip: (paginationParams.skip - 1) * paginationParams.take,
 		};
 	}
 );

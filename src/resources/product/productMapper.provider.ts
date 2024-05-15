@@ -58,7 +58,7 @@ export class ProductMapperProvider {
 				description: product.category.description,
 				name: product.category.name,
 				parentId: product.category.parentId,
-			}
+			};
 		}
 
 		return productViewDto;
