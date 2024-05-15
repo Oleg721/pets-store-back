@@ -542,9 +542,9 @@ function fillAttributes(attributesArr: any[], categoryName, parentCategory) {
 					attributes.birthDate = getRandomDate('2019-01-01', '2024-03-31');
 					return;
 				}
-				case 'bread': {
+				case 'breed': {
 					if (petBreadByCategory[categoryName]) {
-						attributes.bread = getRandomElement(
+						attributes.breed = getRandomElement(
 							petBreadByCategory[categoryName]
 						);
 					}
