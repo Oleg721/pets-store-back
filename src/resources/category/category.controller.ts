@@ -90,7 +90,7 @@ export class CategoryController {
 				categoryId: id,
 			},
 			relations: {
-				productAttributeName: withAttributes && {
+				productAttributeNames: withAttributes && {
 					categoryAttribute: {
 						attributeName: true,
 					},

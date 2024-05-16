@@ -45,7 +45,7 @@ export class Product extends BaseEntity {
 		() => ProductAttributeName,
 		(productAttributeName) => productAttributeName.product
 	)
-	productAttributeName: ProductAttributeName[];
+	productAttributeNames: ProductAttributeName[];
 
 	// @JoinTable()
 	// categories: Category[]

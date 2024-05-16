@@ -20,7 +20,7 @@ export class ProductAttributeName extends BaseEntity {
 
 	@ManyToOne(
 		() => Product,
-		(product) => product.productAttributeName
+		(product) => product.productAttributeNames
 	)
 	product: Product;
 }

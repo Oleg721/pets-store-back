@@ -101,7 +101,7 @@ export class ProductService extends BaseCrudService<
 		const test = await this.productRepository.findOne({
 			where: { id },
 			relations: {
-				productAttributeName: {
+				productAttributeNames: {
 					categoryAttribute: {
 						attributeName: true,
 					},
