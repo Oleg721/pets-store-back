@@ -23,6 +23,8 @@ import { Product } from 'src/entities';
 import { FindOptionsWhere } from 'typeorm';
 import { Filters } from 'src/decorators/Filters.decorator';
 import { filtersApiQuerySchema } from 'src/common/swagger/filters.schema';
+import { FiltersToOrmOptionsTransformPipe } from 'src/pipes/FiltersToOrmOptionsTransform.pipe';
+import { FiltersProductAttributeTransformPipe } from 'src/pipes/FiltersProductAttributeTransform.pipe';
 
 @ApiTags('products')
 @Controller('products')
@@ -45,7 +47,11 @@ export class ProductController {
 	@ApiQuery(filtersApiQuerySchema)
 	async getAll(
 		@PaginationDecorator() pagination: Pagination,
-		@Filters() filters: FindOptionsWhere<Product>,
+		@Filters(
+			FiltersProductAttributeTransformPipe,
+			FiltersToOrmOptionsTransformPipe
+		)
+		filters: FindOptionsWhere<Product>,
 		@Query('with-category', new ParseBoolPipe({ optional: true }))
 		withCategory: boolean,
 		@Query('with-attributes', new ParseBoolPipe({ optional: true }))
@@ -54,12 +60,15 @@ export class ProductController {
 		const products = await this.productService.findAll({
 			...pagination,
 			relations: {
-				productAttributeName: withAttributes && {
+				productAttributeNames: withAttributes && {
 					categoryAttribute: {
 						attributeName: true,
 					},
 				},
 				category: withCategory,
+			},
+			where: {
+				...filters
 			},
 		});
 

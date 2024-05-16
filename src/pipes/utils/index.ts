@@ -1,6 +1,6 @@
 export function createNestedObjectByIdPath(
-	dataArr: { id: 'string', [key: string]: any }[],
-    valueMapCallBack?: (data: {[key: string]: any}) => any
+	dataArr: { id: 'string'; [key: string]: any }[],
+	valueMapCallBack?: (data: { [key: string]: any }) => any
 ): Record<string, any> {
 	let obj = {};
 
@@ -8,6 +8,7 @@ export function createNestedObjectByIdPath(
 		const { id, ...restFields } = data;
 		const pathArr = id.split('.');
 		const value = valueMapCallBack ? valueMapCallBack(restFields) : restFields;
+
 		let temp = obj;
 
 		pathArr.forEach((key, index) => {
@@ -21,4 +22,21 @@ export function createNestedObjectByIdPath(
 	});
 
 	return obj;
+}
+
+export function isValidDate(dateString: string): boolean {
+	const regex = /^\d{4}-\d{2}-\d{2}$/;
+
+	if (!dateString.match(regex)) {
+		return false;
+	}
+
+	const date = new Date(dateString);
+	const timestamp = date.getTime();
+
+	if (typeof timestamp !== 'number' || Number.isNaN(timestamp)) {
+		return false;
+	}
+
+	return true;
 }
