@@ -38,7 +38,9 @@ export const PaginationDecorator = createParamDecorator(
 
 		return {
 			take: paginationParams.take,
-			skip: (paginationParams.skip - 1) * paginationParams.take,
+			skip:
+				paginationParams.skip &&
+				(paginationParams.skip - 1) * paginationParams.take,
 		};
 	}
 );
