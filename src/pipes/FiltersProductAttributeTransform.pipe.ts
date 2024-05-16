@@ -5,6 +5,10 @@ import { isValidDate } from './utils';
 @Injectable()
 export class FiltersProductAttributeTransformPipe implements PipeTransform {
 	transform(value: any[]) {
+		if (!value?.length) {
+			return value;
+		}
+
 		const { restFilters, attributeFilters } = value.reduce(
 			(acc, filter) => {
 				if (filter?.id?.split('.').includes('productAttributeNames')) {
