@@ -14,7 +14,7 @@ const transformCategoryAttributes = (
 };
 
 @Injectable()
-export class ProductMapperProvider {
+export class CategoryMapperProvider {
 	EntityToPaginationViewDto(
 		[categories, count]: [categories: Category[], count: number],
 		hasPagination: boolean = true
