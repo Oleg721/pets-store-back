@@ -33,7 +33,7 @@ const usersData = [
 const attributeNamesData = [
 	{ name: 'color', type: 'string' },
 	{ name: 'sex', type: 'string' },
-	{ name: 'birthDate', type: 'string' },
+	{ name: 'birthDate', type: 'date' },
 	{ name: 'breed', type: 'string' },
 	{ name: 'size', type: 'string' },
 	{ name: 'weight', type: 'numeric' },
