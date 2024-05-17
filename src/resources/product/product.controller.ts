@@ -20,11 +20,16 @@ import { ProductMapperProvider } from './productMapper.provider';
 import { CreateProductDto } from './dto/create-product.dto';
 import { PaginationResult } from '../../common/dto/pagination.dto';
 import { Product } from 'src/entities';
-import { FindOptionsWhere } from 'typeorm';
+import { FindOptionsOrder, FindOptionsWhere } from 'typeorm';
 import { Filters } from 'src/decorators/Filters.decorator';
-import { filtersApiQuerySchema } from 'src/common/swagger/filters.schema';
+import {
+	filtersApiQuerySchema,
+	sortByApiQuerySchema,
+} from 'src/common/swagger/filters.schema';
 import { FiltersToOrmOptionsTransformPipe } from 'src/pipes/FiltersToOrmOptionsTransform.pipe';
 import { FiltersProductAttributeTransformPipe } from 'src/pipes/FiltersProductAttributeTransform.pipe';
+import { SortBy } from 'src/decorators/Sort.decorator';
+import { SortByToOptionsTransform } from 'src/pipes/SortByToOptionsTransform.pipe';
 
 @ApiTags('products')
 @Controller('products')
@@ -45,6 +50,7 @@ export class ProductController {
 	@ApiQuery({ name: 'with-category', required: false })
 	@ApiQuery({ name: 'with-attributes', required: false })
 	@ApiQuery(filtersApiQuerySchema)
+	@ApiQuery(sortByApiQuerySchema)
 	async getAll(
 		@PaginationDecorator() pagination: Pagination,
 		@Filters(
@@ -52,6 +58,8 @@ export class ProductController {
 			FiltersToOrmOptionsTransformPipe
 		)
 		filters: FindOptionsWhere<Product>,
+		@SortBy(SortByToOptionsTransform)
+		sortBy: FindOptionsOrder<Product>,
 		@Query('with-category', new ParseBoolPipe({ optional: true }))
 		withCategory: boolean,
 		@Query('with-attributes', new ParseBoolPipe({ optional: true }))
@@ -68,7 +76,10 @@ export class ProductController {
 				category: withCategory,
 			},
 			where: {
-				...filters
+				...filters,
+			},
+			order: {
+				...sortBy,
 			},
 		});
 

@@ -74,20 +74,26 @@ export const filtersApiQuerySchema: ApiQueryOptions = {
 		},
 	},
 };
-export const filtersApiQuerySchema_: ApiQueryOptions = {
-	name: 'filters',
-	type: 'string',
-	example: [
-		{
-			id: 'category.name',
-			type: 'includesValue',
-			value: ['cat', 'dog'],
-		},
-		{
-			id: 'status',
-			type: 'includesValue',
-			value: ['available'],
-		},
-	],
+
+export const sortByApiQuerySchema: ApiQueryOptions = {
+	name: 'sort_by',
 	required: false,
+	schema: {
+		type: 'array',
+		items: {
+			type: 'object',
+			properties: {
+				id: {
+					type: 'string',
+					description:
+						"The ID of the field in the response object, if you need to filter by nested objects, the ID must be a path through a dot - 'category.name'",
+					example: 'price',
+				},
+				desc: {
+					type: 'boolean',
+					example: true,
+				},
+			},
+		},
+	},
 };
