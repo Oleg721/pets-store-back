@@ -5,6 +5,7 @@ import { CreateViewDto } from './dto/view-category.dto';
 import { PaginationResult } from 'src/common/dto/pagination.dto';
 import { CategoryAttributeValuesViewDto } from './dto/view-category-attribute-values.dto';
 import { ProductMapperProvider } from '../product/productMapper.provider';
+import { TypeEnum } from 'src/entities/attributeName.entity';
 
 const transformCategoryAttributes = (
 	categoryAttributes: CategoryAttribute[]
@@ -13,6 +14,21 @@ const transformCategoryAttributes = (
 		const { id: _, ...rest } = ca.attributeName;
 		return { ...rest };
 	});
+};
+
+const transformCategoryAttributeValues = (
+	type: TypeEnum,
+	values: (string | number)[]
+) => {
+	switch (type) {
+		case TypeEnum.NUMBER:
+			const input = values.filter((x) => !isNaN(x as number)) as number[];
+			const min = Math.min(...input);
+			const max = Math.max(...input);
+			return input.length > 1 ? [Math.floor(min), Math.ceil(max)] : [];
+		default:
+			return values;
+	}
 };
 
 @Injectable()
@@ -55,21 +71,22 @@ export class CategoryMapperProvider {
 		return categoryViewDto;
 	}
 
-	categoryAttributesViewDto([catAttributes]: [
-		catAttributes: CategoryAttribute[],
-	]): CategoryAttributeValuesViewDto[] {
-		const categoryViewDtos = catAttributes.map(cat => {
+	categoryAttributesViewDto(catAttributes: CategoryAttribute[]): CategoryAttributeValuesViewDto[] {
+		const categoryViewDtos = catAttributes.map((cat) => {
 			const categoryViewDto = new CategoryAttributeValuesViewDto();
-			
-			const valuesSet = new Set<string | number>();
-			cat.productAttributeNames?.forEach(attr => valuesSet.add(attr.value));
-			
+
+			if (cat.attributeName.type === TypeEnum.DATE) return; // return nothing for date type
+
+			const values = cat.productAttributeNames?.map((attr) => attr.value);
+
 			categoryViewDto.name = cat.attributeName.name;
 			categoryViewDto.type = cat.attributeName.type;
-			categoryViewDto.values = Array.from(valuesSet);
+			categoryViewDto.values = transformCategoryAttributeValues(cat.attributeName.type, values);
 
 			return categoryViewDto;
-	});
+		})
+		.filter((dto) => dto !== null);
+
 		return categoryViewDtos;
 	}
 }

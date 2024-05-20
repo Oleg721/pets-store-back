@@ -70,15 +70,7 @@ export class CategoryService extends BaseCrudService<
 
 	async getAttributesWithValuesByCategory(
 		id: number
-	): Promise<CategoryAttributeValuesViewDto | any> {
-		const result = this.categoryAttributeService.findAll({
-			where: { categoryId: id },
-			relations: {
-				attributeName: true,
-				productAttributeNames: true,
-			},
-		});
-
-		return result;
+	): Promise<CategoryAttribute[]> {
+		return await this.categoryAttributeService.findAllUnique(id);
 	}
 }

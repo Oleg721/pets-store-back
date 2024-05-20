@@ -65,4 +65,19 @@ export class CategoryAttributeService extends BaseCrudService<
 		}
 		return true;
 	}
+
+	async findAllUnique(categoryId: number) {
+		const result = await this.categoryAttribute
+			.createQueryBuilder('categoryAttribute')
+			.leftJoinAndSelect('categoryAttribute.attributeName', 'attributeName')
+			.leftJoinAndSelect(
+				'categoryAttribute.productAttributeNames',
+				'productAttributeNames'
+			)
+			.where('categoryAttribute.categoryId = :categoryId', { categoryId })
+			.distinctOn(['productAttributeNames.value']) // 'value' is the unique field in productAttributeNames
+			.getMany();
+
+		return result;
+	}
 }
