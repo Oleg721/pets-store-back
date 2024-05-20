@@ -4,6 +4,7 @@ import { CreateAttributeNameDto } from 'src/resources/attribute-name/dto/create-
 import { CreateCategoryDto } from 'src/resources/category/dto/create-category.dto';
 import { CreateProductDto } from 'src/resources/product/dto/create-product.dto';
 import { generateProducts } from './product-generator';
+import { TypeEnum } from 'src/entities/attributeName.entity';
 
 // seeds
 const usersData = [
@@ -41,7 +42,7 @@ const attributeNamesData = [
 	{ name: 'material', type: 'string' },
 	{ name: 'packSize', type: 'string' },
 	{ name: 'lifestage', type: 'string' },
-];
+] as { name: string, type: TypeEnum }[];
 const petAttributeNames = [
 	'color',
 	'sex',

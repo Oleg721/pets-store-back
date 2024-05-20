@@ -3,6 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { Category, CategoryAttribute } from 'src/entities';
 import { CreateViewDto } from './dto/view-category.dto';
 import { PaginationResult } from 'src/common/dto/pagination.dto';
+import { CategoryAttributeValuesViewDto } from './dto/view-category-attribute-values.dto';
 
 const transformCategoryAttributes = (
 	categoryAttributes: CategoryAttribute[]
@@ -44,5 +45,23 @@ export class CategoryMapperProvider {
 			transformCategoryAttributes(category.categoryAttributes);
 
 		return categoryViewDto;
+	}
+
+	categoryAttributesViewDto([catAttributes]: [
+		catAttributes: CategoryAttribute[],
+	]): CategoryAttributeValuesViewDto[] {
+		const categoryViewDtos = catAttributes.map(cat => {
+			const categoryViewDto = new CategoryAttributeValuesViewDto();
+			
+			const valuesSet = new Set<string | number>();
+			cat.productAttributeNames?.forEach(attr => valuesSet.add(attr.value));
+			
+			categoryViewDto.name = cat.attributeName.name;
+			categoryViewDto.type = cat.attributeName.type;
+			categoryViewDto.values = Array.from(valuesSet);
+
+			return categoryViewDto;
+	});
+		return categoryViewDtos;
 	}
 }
