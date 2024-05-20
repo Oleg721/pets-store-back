@@ -16,7 +16,7 @@ export class ProductViewDto {
 
 	categoryId: number;
 
-	productAttributes?: { [key: string]: string | number | Date };
+	productAttributeNames?: { [key: string]: string | number | Date };
 
 	category: Omit<
 		CreateViewDto,

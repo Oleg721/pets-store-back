@@ -44,11 +44,11 @@ export class ProductMapperProvider {
 		productViewDto.price = product.price;
 		productViewDto.status = product.status;
 		if (
-			product.productAttributeName &&
-			Array.isArray(product.productAttributeName)
+			product.productAttributeNames &&
+			Array.isArray(product.productAttributeNames)
 		) {
-			productViewDto.productAttributes = convertAttributesArrayToObject(
-				product.productAttributeName
+			productViewDto.productAttributeNames = convertAttributesArrayToObject(
+				product.productAttributeNames
 			);
 		}
 

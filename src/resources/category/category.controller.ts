@@ -15,13 +15,23 @@ import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
 import { CategoryMapperProvider } from './categoryMapper.provider';
 import { ApiQuery, ApiTags } from '@nestjs/swagger';
-import { Category } from 'src/entities';
+import { Category, Product } from 'src/entities';
 import {
 	Pagination,
 	PaginationDecorator,
 } from 'src/decorators/Pagination.decorator';
 import { ProductService } from '../product/product.service';
 import { ProductMapperProvider } from '../product/productMapper.provider';
+import {
+	filtersApiQuerySchema,
+	sortByApiQuerySchema,
+} from 'src/common/swagger/filters.schema';
+import { Filters } from 'src/decorators/Filters.decorator';
+import { FiltersProductAttributeTransformPipe } from 'src/pipes/FiltersProductAttributeTransform.pipe';
+import { FiltersToOrmOptionsTransformPipe } from 'src/pipes/FiltersToOrmOptionsTransform.pipe';
+import { FindOptionsOrder, FindOptionsWhere } from 'typeorm';
+import { SortBy } from 'src/decorators/Sort.decorator';
+import { SortByToOptionsTransform } from 'src/pipes/SortByToOptionsTransform.pipe';
 
 @ApiTags('categories')
 @Controller('categories')
@@ -30,7 +40,7 @@ export class CategoryController {
 		private readonly categoryService: CategoryService,
 		private readonly productService: ProductService,
 		private readonly mapper: CategoryMapperProvider,
-		private readonly productMapper: ProductMapperProvider,
+		private readonly productMapper: ProductMapperProvider
 	) {}
 
 	@Post()
@@ -46,7 +56,7 @@ export class CategoryController {
 	@ApiQuery({ name: 'with_category_attributes', required: false })
 	async findAll(
 		@PaginationDecorator() pagination: Pagination,
-		@Query('with_category_attributes', new ParseBoolPipe({optional: true}))
+		@Query('with_category_attributes', new ParseBoolPipe({ optional: true }))
 		hasCategoryAttributes?: boolean
 	) {
 		const relations = {
@@ -75,22 +85,31 @@ export class CategoryController {
 	@ApiQuery({ name: 'page', required: false })
 	@ApiQuery({ name: 'size', required: false })
 	@ApiQuery({ name: 'with-category', required: false })
-  @ApiQuery({ name: 'with-attributes', required: false })
+	@ApiQuery({ name: 'with-attributes', required: false })
+	@ApiQuery(filtersApiQuerySchema)
+	@ApiQuery(sortByApiQuerySchema)
 	async getProductsByCategoryId(
 		@Query('with-category', new ParseBoolPipe({ optional: true }))
-    withCategory: boolean,
-    @Query('with-attributes', new ParseBoolPipe({ optional: true }))
-    withAttributes: boolean,
+		withCategory: boolean,
+		@Query('with-attributes', new ParseBoolPipe({ optional: true }))
+		withAttributes: boolean,
 		@PaginationDecorator() pagination: Pagination,
-		@Param('id', ParseIntPipe) id: number
+		@Param('id', ParseIntPipe) id: number,
+		@Filters(
+			FiltersProductAttributeTransformPipe,
+			FiltersToOrmOptionsTransformPipe
+		)
+		filters: FindOptionsWhere<Product>,
+		@SortBy(SortByToOptionsTransform)
+		sortBy: FindOptionsOrder<Product>
 	) {
 		const products = await this.productService.findAll({
-
 			where: {
+				...filters,
 				categoryId: id,
 			},
 			relations: {
-				productAttributeName: withAttributes && {
+				productAttributeNames: withAttributes && {
 					categoryAttribute: {
 						attributeName: true,
 					},
@@ -98,6 +117,9 @@ export class CategoryController {
 				category: withCategory,
 			},
 			...pagination,
+			order: {
+				...sortBy,
+			},
 		});
 		return this.productMapper.productToViewPaginationDto(
 			products,
