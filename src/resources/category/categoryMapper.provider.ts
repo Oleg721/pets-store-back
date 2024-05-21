@@ -75,8 +75,6 @@ export class CategoryMapperProvider {
 		const categoryViewDtos = catAttributes.map((cat) => {
 			const categoryViewDto = new CategoryAttributeValuesViewDto();
 
-			if (cat.attributeName.type === TypeEnum.DATE) return; // return nothing for date type
-
 			const values = cat.productAttributeNames?.map((attr) => attr.value);
 
 			categoryViewDto.name = cat.attributeName.name;
@@ -85,7 +83,6 @@ export class CategoryMapperProvider {
 
 			return categoryViewDto;
 		})
-		.filter((dto) => dto !== null);
 
 		return categoryViewDtos;
 	}

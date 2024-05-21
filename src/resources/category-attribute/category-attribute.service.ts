@@ -75,6 +75,7 @@ export class CategoryAttributeService extends BaseCrudService<
 				'productAttributeNames'
 			)
 			.where('categoryAttribute.categoryId = :categoryId', { categoryId })
+			.andWhere('attributeName.type IN (:...types)', { types: ['string', 'numeric'] }) // Include 'string' and 'numeric' attributeName types
 			.distinctOn(['productAttributeNames.value']) // 'value' is the unique field in productAttributeNames
 			.getMany();
 
