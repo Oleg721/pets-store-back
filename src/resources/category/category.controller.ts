@@ -127,6 +127,13 @@ export class CategoryController {
 		);
 	}
 
+	@Get(':id/attributes')
+	async getCategoryAttributes(@Param('id', ParseIntPipe) id: number) {
+		const categoryAttributes =
+			await this.categoryService.getAttributesWithValuesByCategory(id);
+		return this.mapper.categoryAttributesViewDto(categoryAttributes);
+	}
+
 	@Patch(':id')
 	update(
 		@Param('id') id: string,
