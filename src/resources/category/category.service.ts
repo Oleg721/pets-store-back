@@ -66,4 +66,10 @@ export class CategoryService extends BaseCrudService<
 
 		return categoryWithRelations;
 	}
+
+	async getAttributesWithValuesByCategory(
+		id: number
+	): Promise<CategoryAttribute[]> {
+		return await this.categoryAttributeService.findAllUnique(id);
+	}
 }

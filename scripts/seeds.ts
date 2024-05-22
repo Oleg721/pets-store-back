@@ -32,17 +32,17 @@ const usersData = [
 ];
 
 const attributeNamesData = [
-	{ name: 'color', type: TypeEnum.STRING },
-	{ name: 'sex', type: TypeEnum.STRING  },
-	{ name: 'birthDate', type: TypeEnum.DATE },
-	{ name: 'breed', type: TypeEnum.STRING  },
-	{ name: 'size', type: TypeEnum.STRING  },
-	{ name: 'weight', type: TypeEnum.NUMBER },
-	{ name: 'brand', type: TypeEnum.STRING  },
-	{ name: 'material', type: TypeEnum.STRING  },
-	{ name: 'packSize', type: TypeEnum.STRING  },
-	{ name: 'lifestage', type: TypeEnum.STRING  },
-];
+	{ name: 'color', type: 'string' },
+	{ name: 'sex', type: 'string' },
+	{ name: 'birthDate', type: 'date' },
+	{ name: 'breed', type: 'string' },
+	{ name: 'size', type: 'string' },
+	{ name: 'weight', type: 'numeric' },
+	{ name: 'brand', type: 'string' },
+	{ name: 'material', type: 'string' },
+	{ name: 'packSize', type: 'string' },
+	{ name: 'lifestage', type: 'string' },
+] as { name: string, type: TypeEnum }[];
 const petAttributeNames = [
 	'color',
 	'sex',
