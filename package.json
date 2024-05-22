@@ -22,7 +22,8 @@
     "typeorm": "typeorm-ts-node-esm",
     "migration:g": "typeorm-ts-node-esm migration:generate -d ./scripts/datasource.ts",
     "migration:run": "typeorm-ts-node-esm migration:run -d ./scripts/datasource.ts",
-    "migration:revert": "typeorm-ts-node-esm migration:revert -d ./scripts/datasource.ts"
+    "migration:revert": "typeorm-ts-node-esm migration:revert -d ./scripts/datasource.ts",
+    "migration:create": "typeorm-ts-node-esm migration:create"
   },
   "dependencies": {
     "@nestjs/common": "^10.0.0",

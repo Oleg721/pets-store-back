@@ -4,6 +4,13 @@ import { IsNotEmpty } from 'class-validator';
 import { BaseEntity } from './base.entity';
 import { CategoryAttribute } from './categoryAttribute.entity';
 
+export enum TypeEnum {
+	STRING = 'string',
+	NUMBER = 'numeric',
+	DATE = 'date',
+}
+
+
 @Entity('AttributeNames')
 export class AttributeName extends BaseEntity {
 	@Column({
@@ -14,7 +21,7 @@ export class AttributeName extends BaseEntity {
 
 	@Column()
 	@IsNotEmpty()
-	type: string;
+	type: TypeEnum;
 
 	@OneToMany(
 		() => CategoryAttribute,
