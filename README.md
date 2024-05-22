@@ -68,6 +68,14 @@ The command creates a migration file after changes related to database entities,
 
 **[path]** - ./migrations/your-migration-name
 
+### create
+```
+npm run migration:create [path]
+```
+The command creates a migration file.
+
+**[path]** - ./migrations/your-migration-name
+
 ### run
 ```
 npm run migration:run
