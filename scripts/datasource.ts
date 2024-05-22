@@ -13,12 +13,3 @@ export const AppDataSource = new DataSource({
     migrations: [__dirname + '/../migrations/*.ts'],
     migrationsTableName: "migration_table",
 })
-
-AppDataSource.initialize()
-	.then(() => {
-		console.log('Data Source has been initialized!');
-		console.log('Migrations:', AppDataSource.migrations);
-	})
-	.catch((err) => {
-		console.error('Error during Data Source initialization:', err);
-	});

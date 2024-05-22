@@ -6,7 +6,6 @@ import { Category, CategoryAttribute } from 'src/entities';
 import { Repository, In } from 'typeorm';
 import { AttributeNameService } from '../attribute-name/attribute-name.service';
 import { CategoryAttributeService } from '../category-attribute/category-attribute.service';
-import { CategoryAttributeValuesViewDto } from './dto/view-category-attribute-values.dto';
 
 @Injectable()
 export class CategoryService extends BaseCrudService<
