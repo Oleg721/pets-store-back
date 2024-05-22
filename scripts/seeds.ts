@@ -4,6 +4,7 @@ import { CreateAttributeNameDto } from 'src/resources/attribute-name/dto/create-
 import { CreateCategoryDto } from 'src/resources/category/dto/create-category.dto';
 import { CreateProductDto } from 'src/resources/product/dto/create-product.dto';
 import { generateProducts } from './product-generator';
+import { TypeEnum } from 'src/entities/attributeName.entity';
 
 // seeds
 const usersData = [
@@ -31,16 +32,16 @@ const usersData = [
 ];
 
 const attributeNamesData = [
-	{ name: 'color', type: 'string' },
-	{ name: 'sex', type: 'string' },
-	{ name: 'birthDate', type: 'date' },
-	{ name: 'breed', type: 'string' },
-	{ name: 'size', type: 'string' },
-	{ name: 'weight', type: 'numeric' },
-	{ name: 'brand', type: 'string' },
-	{ name: 'material', type: 'string' },
-	{ name: 'packSize', type: 'string' },
-	{ name: 'lifestage', type: 'string' },
+	{ name: 'color', type: TypeEnum.STRING },
+	{ name: 'sex', type: TypeEnum.STRING  },
+	{ name: 'birthDate', type: TypeEnum.DATE },
+	{ name: 'breed', type: TypeEnum.STRING  },
+	{ name: 'size', type: TypeEnum.STRING  },
+	{ name: 'weight', type: TypeEnum.NUMBER },
+	{ name: 'brand', type: TypeEnum.STRING  },
+	{ name: 'material', type: TypeEnum.STRING  },
+	{ name: 'packSize', type: TypeEnum.STRING  },
+	{ name: 'lifestage', type: TypeEnum.STRING  },
 ];
 const petAttributeNames = [
 	'color',
