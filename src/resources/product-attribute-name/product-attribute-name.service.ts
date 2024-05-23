@@ -8,7 +8,8 @@ import { ProductAttributeName } from 'src/entities';
 import { ProductAttrNameMapperProvider } from './product-attribute-name-mapper.provider';
 import { TypeEnum } from 'src/entities/attributeName.entity';
 import { MaxAndMinRawResultType, StringRawResultType } from './types';
-import { CategoryAttributeValuesViewDto } from '../category/dto/view-category-attribute-values.dto';
+import { ProductAttributeValuesViewDto } from './dto/view-product-attribute-values.dto';
+
 
 @Injectable()
 export class ProductAttributeNameService extends BaseCrudService<
@@ -24,7 +25,7 @@ export class ProductAttributeNameService extends BaseCrudService<
 		super(productAttributeNameRepository);
 	}
 
-	async getAggregatedProductAttributesByCategory(categoryId: number): Promise<CategoryAttributeValuesViewDto[]> {
+	async getAggregatedProductAttributesByCategory(categoryId: number): Promise<ProductAttributeValuesViewDto[]> {
 		const stringTypeAttributesRaw = this.productAttributeNameRepository
 			.createQueryBuilder('pan')
 			.select(['DISTINCT(pan.value) as value', 'an.name as name'])

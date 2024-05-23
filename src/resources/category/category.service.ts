@@ -7,7 +7,8 @@ import { Repository, In } from 'typeorm';
 import { AttributeNameService } from '../attribute-name/attribute-name.service';
 import { CategoryAttributeService } from '../category-attribute/category-attribute.service';
 import { ProductAttributeNameService } from '../product-attribute-name/product-attribute-name.service';
-import { CategoryAttributeValuesViewDto } from './dto/view-category-attribute-values.dto';
+import { ProductAttributeValuesViewDto } from '../product-attribute-name/dto/view-product-attribute-values.dto';
+
 
 @Injectable()
 export class CategoryService extends BaseCrudService<
@@ -72,7 +73,7 @@ export class CategoryService extends BaseCrudService<
 
 	getAttributesWithValuesByCategory(
 		id: number
-	): Promise<CategoryAttributeValuesViewDto[]> {
+	): Promise<ProductAttributeValuesViewDto[]> {
 		return this.productAttributeNameService.getAggregatedProductAttributesByCategory(id);
 	}
 }
