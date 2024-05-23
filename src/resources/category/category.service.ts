@@ -6,6 +6,8 @@ import { Category, CategoryAttribute } from 'src/entities';
 import { Repository, In } from 'typeorm';
 import { AttributeNameService } from '../attribute-name/attribute-name.service';
 import { CategoryAttributeService } from '../category-attribute/category-attribute.service';
+import { ProductAttributeNameService } from '../product-attribute-name/product-attribute-name.service';
+import { CategoryAttributeValuesViewDto } from './dto/view-category-attribute-values.dto';
 
 @Injectable()
 export class CategoryService extends BaseCrudService<
@@ -18,7 +20,8 @@ export class CategoryService extends BaseCrudService<
 		private categoryRepository: Repository<Category>,
 		private readonly attributeNameService: AttributeNameService,
 		@Inject(forwardRef(() => CategoryAttributeService))
-		private readonly categoryAttributeService: CategoryAttributeService
+		private readonly categoryAttributeService: CategoryAttributeService,
+		private readonly productAttributeNameService: ProductAttributeNameService
 	) {
 		super(categoryRepository);
 	}
@@ -67,9 +70,9 @@ export class CategoryService extends BaseCrudService<
 		return categoryWithRelations;
 	}
 
-	async getAttributesWithValuesByCategory(
+	getAttributesWithValuesByCategory(
 		id: number
-	): Promise<CategoryAttribute[]> {
-		return await this.categoryAttributeService.findAllUnique(id);
+	): Promise<CategoryAttributeValuesViewDto[]> {
+		return this.productAttributeNameService.getAggregatedProductAttributesByCategory(id);
 	}
 }
