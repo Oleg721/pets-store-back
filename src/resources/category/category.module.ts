@@ -8,6 +8,7 @@ import { CategoryAttributeService } from '../category-attribute/category-attribu
 import { ProductService } from '../product/product.service';
 import { ProductAttributeNameService } from '../product-attribute-name/product-attribute-name.service';
 import { ProductMapperProvider } from '../product/productMapper.provider';
+import { ProductAttrNameMapperProvider } from '../product-attribute-name/product-attribute-name-mapper.provider';
 
 @Module({
 	imports: [DatabaseModule],
@@ -20,6 +21,7 @@ import { ProductMapperProvider } from '../product/productMapper.provider';
 		CategoryAttributeService,
 		ProductService,
 		ProductAttributeNameService,
+		ProductAttrNameMapperProvider
 	]
 })
 export class CategoryModule {}
