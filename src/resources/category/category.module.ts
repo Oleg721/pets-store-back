@@ -18,5 +18,6 @@ import { CategoryAttributeModule } from '../category-attribute/category-attribut
 	],
 	controllers: [CategoryController],
 	providers: [CategoryService, CategoryMapperProvider],
+	exports: [CategoryService],
 })
 export class CategoryModule {}
