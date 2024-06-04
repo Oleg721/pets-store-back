@@ -1,27 +1,23 @@
-import { Module } from '@nestjs/common';
+import { Module, forwardRef } from '@nestjs/common';
 import { CategoryService } from './category.service';
 import { CategoryController } from './category.controller';
 import { DatabaseModule } from 'src/database/database.module';
 import { CategoryMapperProvider } from './categoryMapper.provider';
-import { AttributeNameService } from '../attribute-name/attribute-name.service';
-import { CategoryAttributeService } from '../category-attribute/category-attribute.service';
-import { ProductService } from '../product/product.service';
-import { ProductAttributeNameService } from '../product-attribute-name/product-attribute-name.service';
-import { ProductMapperProvider } from '../product/productMapper.provider';
-import { ProductAttrNameMapperProvider } from '../product-attribute-name/product-attribute-name-mapper.provider';
+import { AttributeNameModule } from '../attribute-name/attribute-name.module';
+import { ProductAttributeNameModule } from '../product-attribute-name/product-attribute-name.module';
+import { ProductModule } from '../product/product.module';
+import { CategoryAttributeModule } from '../category-attribute/category-attribute.module';
 
 @Module({
-	imports: [DatabaseModule],
+	imports: [
+		DatabaseModule,
+		AttributeNameModule,
+		ProductAttributeNameModule,
+		forwardRef(() => ProductModule),
+		forwardRef(() => CategoryAttributeModule),
+	],
 	controllers: [CategoryController],
-	providers: [
-		CategoryService,
-		CategoryMapperProvider,
-		ProductMapperProvider,
-		AttributeNameService,
-		CategoryAttributeService,
-		ProductService,
-		ProductAttributeNameService,
-		ProductAttrNameMapperProvider
-	]
+	providers: [CategoryService, CategoryMapperProvider],
+	exports: [CategoryService],
 })
 export class CategoryModule {}

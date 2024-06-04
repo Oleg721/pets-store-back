@@ -9,5 +9,6 @@ import { AttributeNameMapperProvider } from './attribute-name-mapper.provider';
   imports: [DatabaseModule],
   controllers: [AttributeNameController],
   providers: [AttributeNameService, AttributeNameMapperProvider],
+  exports: [AttributeNameService]
 })
 export class AttributeNameModule {}

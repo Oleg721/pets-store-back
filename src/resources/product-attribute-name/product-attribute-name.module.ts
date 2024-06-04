@@ -8,5 +8,6 @@ import { ProductAttrNameMapperProvider } from './product-attribute-name-mapper.p
   imports: [DatabaseModule],
   controllers: [ProductAttributeNameController],
   providers: [ProductAttributeNameService, ProductAttrNameMapperProvider],
+  exports: [ProductAttributeNameService, ProductAttrNameMapperProvider]
 })
 export class ProductAttributeNameModule {}
