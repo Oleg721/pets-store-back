@@ -22,6 +22,9 @@ import { Roles } from 'src/decorators/roles.decorator';
 import { Role } from 'src/entities/user.entity';
 import { CheckSelfGuard } from 'src/guards/check-self.guard';
 import { CheckSelf } from 'src/decorators/check-self.decorator';
+import { UpdateUserPasswordDto } from './dto/update-user-password.dto';
+import { UpdateUserEmailDto } from './dto/update-user-email.dto';
+import { LoginResponseDto } from 'src/auth/dto/loginResponse.dto';
 
 @ApiTags('users')
 @Controller('users')
@@ -58,12 +61,33 @@ export class UsersController {
 	@CheckSelf('id')
 	@UseGuards(JwtAuthGuard, RolesGuard)
 	@Roles([Role.ADMIN, Role.USER])
-	async update(
+	update(
 		@Param('id') id: number,
 		@Body() data: UpdateUserDto
-	): Promise<UserViewDto> {
-		const user = await this.usersService.update(id, data);
-		return this.mapper.userToViewDto(user);
+	): Promise<LoginResponseDto> {
+		return this.usersService.updateUser(id, data);
+	}
+
+	@Patch(':id/password')
+	@CheckSelf('id')
+	@UseGuards(JwtAuthGuard, RolesGuard)
+	@Roles([Role.ADMIN, Role.USER])
+	updatePassword(
+		@Param('id') id: number,
+		@Body() data: UpdateUserPasswordDto
+	): Promise<boolean> {
+		return this.usersService.updatePassword(id, data);
+	}
+
+	@Patch(':id/email')
+	@CheckSelf('id')
+	@UseGuards(JwtAuthGuard, RolesGuard)
+	@Roles([Role.ADMIN, Role.USER])
+	updateEmail(
+		@Param('id') id: number,
+		@Body() data: UpdateUserEmailDto
+	): Promise<LoginResponseDto> {
+		return this.usersService.updateEmail(id, data);
 	}
 
 	@Delete(':id')
