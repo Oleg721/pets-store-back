@@ -5,19 +5,16 @@ import { DatabaseModule } from 'src/database/database.module';
 import { ProductMapperProvider } from './productMapper.provider';
 import { CategoryService } from '../category/category.service';
 import { CategoryAttributeService } from '../category-attribute/category-attribute.service';
-import { ProductAttributeNameService } from '../product-attribute-name/product-attribute-name.service';
-import { ProductAttrNameMapperProvider } from '../product-attribute-name/product-attribute-name-mapper.provider';
 import { AttributeNameModule } from '../attribute-name/attribute-name.module';
+import { ProductAttributeNameModule } from '../product-attribute-name/product-attribute-name.module';
 
 @Module({
-	imports: [DatabaseModule, AttributeNameModule],
+	imports: [DatabaseModule, AttributeNameModule, ProductAttributeNameModule],
 	providers: [
 		ProductService,
 		ProductMapperProvider,
 		CategoryService,
 		CategoryAttributeService,
-		ProductAttributeNameService,
-		ProductAttrNameMapperProvider
 	],
 	controllers: [ProductController],
 })

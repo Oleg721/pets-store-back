@@ -5,13 +5,12 @@ import { DatabaseModule } from 'src/database/database.module';
 import { CategoryMapperProvider } from './categoryMapper.provider';
 import { CategoryAttributeService } from '../category-attribute/category-attribute.service';
 import { ProductService } from '../product/product.service';
-import { ProductAttributeNameService } from '../product-attribute-name/product-attribute-name.service';
 import { ProductMapperProvider } from '../product/productMapper.provider';
-import { ProductAttrNameMapperProvider } from '../product-attribute-name/product-attribute-name-mapper.provider';
 import { AttributeNameModule } from '../attribute-name/attribute-name.module';
+import { ProductAttributeNameModule } from '../product-attribute-name/product-attribute-name.module';
 
 @Module({
-	imports: [DatabaseModule, AttributeNameModule],
+	imports: [DatabaseModule, AttributeNameModule, ProductAttributeNameModule],
 	controllers: [CategoryController],
 	providers: [
 		CategoryService,
@@ -19,8 +18,6 @@ import { AttributeNameModule } from '../attribute-name/attribute-name.module';
 		ProductMapperProvider,
 		CategoryAttributeService,
 		ProductService,
-		ProductAttributeNameService,
-		ProductAttrNameMapperProvider
-	]
+	],
 })
 export class CategoryModule {}
