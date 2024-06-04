@@ -11,7 +11,6 @@ import { CategoryModule } from '../category/category.module';
 @Module({
 	imports: [
 		DatabaseModule,
-		AttributeNameModule,
 		ProductAttributeNameModule,
 		CategoryAttributeModule,
 		forwardRef(() => CategoryModule),
