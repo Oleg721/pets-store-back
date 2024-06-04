@@ -59,8 +59,18 @@ export class UsersService extends BaseCrudService<
 		return await this.userRepository.save(user);
 	}
 
-	async updateUser(id: number, updateDto: UpdateUserDto): Promise<LoginResponseDto> {
-		const updatedUser = await super.update(id, updateDto)
+	async updateUser(
+		id: number,
+		updateDto: UpdateUserDto
+	): Promise<LoginResponseDto> {
+		const { username, firstname, lastname } = updateDto;
+
+		const updatedUser = await super.update(id, {
+			...(username && { username }),
+			...(firstname && { firstname }),
+			...(lastname && { lastname }),
+		});
+
 		return this.authService.generateTokenPair(updatedUser);
 	}
 
