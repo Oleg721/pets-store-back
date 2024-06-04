@@ -15,5 +15,6 @@ import { ProductAttributeNameModule } from '../product-attribute-name/product-at
 		CategoryAttributeMapperProvider,
 		CategoryService,
 	],
+	exports: [CategoryAttributeService],
 })
 export class CategoryAttributeModule {}
