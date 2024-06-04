@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, forwardRef } from '@nestjs/common';
 import { CategoryService } from './category.service';
 import { CategoryController } from './category.controller';
 import { DatabaseModule } from 'src/database/database.module';
@@ -13,8 +13,8 @@ import { CategoryAttributeModule } from '../category-attribute/category-attribut
 		DatabaseModule,
 		AttributeNameModule,
 		ProductAttributeNameModule,
-		ProductModule,
-		CategoryAttributeModule,
+		forwardRef(() => ProductModule),
+		forwardRef(() => CategoryAttributeModule),
 	],
 	controllers: [CategoryController],
 	providers: [CategoryService, CategoryMapperProvider],
