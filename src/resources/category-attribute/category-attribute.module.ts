@@ -4,18 +4,17 @@ import { CategoryAttributeController } from './category-attribute.controller';
 import { DatabaseModule } from 'src/database/database.module';
 import { CategoryAttributeMapperProvider } from './category-attribute-mapper.provider';
 import { CategoryService } from '../category/category.service';
-import { AttributeNameService } from '../attribute-name/attribute-name.service';
 import { ProductAttributeNameService } from '../product-attribute-name/product-attribute-name.service';
 import { ProductAttrNameMapperProvider } from '../product-attribute-name/product-attribute-name-mapper.provider';
+import { AttributeNameModule } from '../attribute-name/attribute-name.module';
 
 @Module({
-	imports: [DatabaseModule],
+	imports: [DatabaseModule, AttributeNameModule],
 	controllers: [CategoryAttributeController],
 	providers: [
 		CategoryAttributeService,
 		CategoryAttributeMapperProvider,
 		CategoryService,
-		AttributeNameService,
 		ProductAttributeNameService,
 		ProductAttrNameMapperProvider
 	],
