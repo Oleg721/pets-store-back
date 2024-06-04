@@ -19,7 +19,11 @@ export class AttributeName extends BaseEntity {
 	@IsNotEmpty()
 	name: string;
 
-	@Column()
+	@Column({
+		type: 'enum',
+		enum: TypeEnum,
+		enumName: 'attributes_type_enum'
+	})
 	@IsNotEmpty()
 	type: TypeEnum;
 
