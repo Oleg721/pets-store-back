@@ -25,9 +25,7 @@ export function createNestedObjectByIdPath(
 }
 
 export function isValidDate(dateString: string): boolean {
-	const regex = /^\d{4}-\d{2}-\d{2}$/;
-
-	if (!dateString.match(regex)) {
+	if (!dateString) {
 		return false;
 	}
 
@@ -35,6 +33,10 @@ export function isValidDate(dateString: string): boolean {
 	const timestamp = date.getTime();
 
 	if (typeof timestamp !== 'number' || Number.isNaN(timestamp)) {
+		return false;
+	}
+
+	if (date.toISOString() !== dateString) {
 		return false;
 	}
 
