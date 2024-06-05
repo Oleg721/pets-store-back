@@ -89,22 +89,18 @@ const getRawQueryByAttribute = (filter) => {
 		case 'dateBetween': {
 			const { from, to } = filter.value;
 
-			if (isValidDate(from) && isValidDate(to)) {
-				return `(select cbp.value from CategoryByProductId cbp where cbp.name='${attributeName}'
-				AND cbp.type='date')::date BETWEEN '${from}' AND '${to}'`;
+			const isValidValue =
+				!from || !to || (isValidDate(from) && isValidDate(to));
+
+				console.log('isValidValue: ', isValidValue);
+				
+
+			if (!isValidValue) {
+				return null;
 			}
 
-			else if (isValidDate(from)) {
-				return `(select cbp.value from CategoryByProductId cbp where cbp.name='${attributeName}'
-				AND cbp.type='date')::date > '${from}'`;
-			}
-
-			else if (isValidDate(to)) {
-				return `(select cbp.value from CategoryByProductId cbp where cbp.name='${attributeName}'
-				AND cbp.type='date')::date < '${to}'`;
-			}
-
-			else return null;
+			return `(select cbp.value from CategoryByProductId cbp where cbp.name='${attributeName}'
+						AND cbp.type='date')::date BETWEEN '${from}' AND '${to}'`;
 		}
 	}
 	return null;
