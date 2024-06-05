@@ -26,7 +26,7 @@ export class WarehouseStock {
 	productId: number;
 
 	@PrimaryColumn()
-	warehouseId
+	warehouseId: number
 
 	@ManyToOne(() => Warehouse, (warehouse) => warehouse.warehouseStocks)
 	warehouse: Warehouse;
