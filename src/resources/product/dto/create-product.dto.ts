@@ -2,21 +2,21 @@ import { ApiProperty } from '@nestjs/swagger';
 import { ProductStatus } from 'src/entities/product.entity';
 
 export class CreateProductDto {
-    @ApiProperty()
+	@ApiProperty()
 	name: string;
 
-    @ApiProperty()
+	@ApiProperty()
 	description: string;
 
-    @ApiProperty()
+	@ApiProperty()
 	status?: ProductStatus;
 
-    @ApiProperty()
+	@ApiProperty()
 	price: number;
-    
-    @ApiProperty()
+
+	@ApiProperty()
 	categoryId: number;
 
-    @ApiProperty()
-    productAttributes?: Record<string, string | number | Date>
+	@ApiProperty()
+	productAttributes?: Record<string, string | number | Date>;
 }

@@ -1,19 +1,19 @@
-import { ProductViewDto } from "src/resources/product/dto/productView.dto"
+import { ProductViewDto } from 'src/resources/product/dto/productView.dto';
 
 export class CreateViewDto {
-    id: number
-    
-    name: string
+	id: number;
 
-    description: string
-    
-    parentId: number
+	name: string;
 
-    parent?: CreateViewDto
+	description: string;
 
-    children?: CreateViewDto[]
+	parentId: number;
 
-    products?: ProductViewDto[]
+	parent?: CreateViewDto;
 
-    categoryAttributes?: {name: string, type: string}[]
+	children?: CreateViewDto[];
+
+	products?: ProductViewDto[];
+
+	categoryAttributes?: { name: string; type: string }[];
 }

@@ -9,7 +9,6 @@ import { CategoryAttributeService } from '../category-attribute/category-attribu
 import { ProductAttributeNameService } from '../product-attribute-name/product-attribute-name.service';
 import { ProductAttributeValuesViewDto } from '../product-attribute-name/dto/view-product-attribute-values.dto';
 
-
 @Injectable()
 export class CategoryService extends BaseCrudService<
 	Category,
@@ -74,6 +73,8 @@ export class CategoryService extends BaseCrudService<
 	getAttributesWithValuesByCategory(
 		id: number
 	): Promise<ProductAttributeValuesViewDto[]> {
-		return this.productAttributeNameService.getAggregatedProductAttributesByCategory(id);
+		return this.productAttributeNameService.getAggregatedProductAttributesByCategory(
+			id
+		);
 	}
 }

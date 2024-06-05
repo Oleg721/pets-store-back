@@ -10,7 +10,6 @@ export enum TypeEnum {
 	DATE = 'date',
 }
 
-
 @Entity('AttributeNames')
 export class AttributeName extends BaseEntity {
 	@Column({
@@ -22,7 +21,7 @@ export class AttributeName extends BaseEntity {
 	@Column({
 		type: 'enum',
 		enum: TypeEnum,
-		enumName: 'attributes_type_enum'
+		enumName: 'attributes_type_enum',
 	})
 	@IsNotEmpty()
 	type: TypeEnum;

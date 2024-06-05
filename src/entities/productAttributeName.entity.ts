@@ -15,12 +15,12 @@ export class ProductAttributeName extends BaseEntity {
 	@Column()
 	categoryAttributeId: number;
 
-	@ManyToOne(() => CategoryAttribute, (categoryAttribute) => categoryAttribute.productAttributeNames)
+	@ManyToOne(
+		() => CategoryAttribute,
+		(categoryAttribute) => categoryAttribute.productAttributeNames
+	)
 	categoryAttribute: CategoryAttribute;
 
-	@ManyToOne(
-		() => Product,
-		(product) => product.productAttributeNames
-	)
+	@ManyToOne(() => Product, (product) => product.productAttributeNames)
 	product: Product;
 }

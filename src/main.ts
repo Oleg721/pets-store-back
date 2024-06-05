@@ -26,7 +26,7 @@ async function bootstrap() {
 				type: 'http',
 				scheme: 'bearer',
 				bearerFormat: 'JWT',
-				name: 'jwt'
+				name: 'jwt',
 			},
 			'jwt'
 		)
@@ -47,7 +47,7 @@ async function bootstrap() {
 		},
 	});
 
-	// app use global pipes to automatically validate requests 
+	// app use global pipes to automatically validate requests
 	// from entity itself such as:
 	/*
 		@MinLength(6, { message: 'Password cannot be less then 6 characters' })

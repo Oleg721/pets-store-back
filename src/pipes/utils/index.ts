@@ -2,7 +2,7 @@ export function createNestedObjectByIdPath(
 	dataArr: { id: 'string'; [key: string]: any }[],
 	valueMapCallBack?: (data: { [key: string]: any }) => any
 ): Record<string, any> {
-	let obj = {};
+	const obj = {};
 
 	dataArr.forEach((data) => {
 		const { id, ...restFields } = data;

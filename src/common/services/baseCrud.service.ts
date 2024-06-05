@@ -25,7 +25,10 @@ export abstract class BaseCrudService<
 		return this._repository.findAndCount(options);
 	}
 
-	async findOne(id: number, option?: FindOptionsWhere<TEntity> ): Promise<TEntity> {
+	async findOne(
+		id: number,
+		option?: FindOptionsWhere<TEntity>
+	): Promise<TEntity> {
 		const entity = await this._repository.findOneBy({
 			id,
 		} as FindOptionsWhere<TEntity>);

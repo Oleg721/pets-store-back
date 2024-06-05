@@ -1,5 +1,5 @@
 export class CreateProductAttributeNameDto {
-  value: string;
-  productId: number;
+	value: string;
+	productId: number;
 	categoryAttributeId: number;
 }

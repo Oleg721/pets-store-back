@@ -29,9 +29,7 @@ export class CategoryMapperProvider {
 		);
 	}
 
-	constructor(private readonly productMapperProvider: ProductMapperProvider){
-
-	}
+	constructor(private readonly productMapperProvider: ProductMapperProvider) {}
 
 	EntityToViewDto(category: Category): CreateViewDto {
 		const categoryViewDto = new CreateViewDto();
@@ -48,8 +46,10 @@ export class CategoryMapperProvider {
 			category.categoryAttributes &&
 			transformCategoryAttributes(category.categoryAttributes);
 
-		if( category.products){
-			categoryViewDto.products = category.products.map(this.productMapperProvider.productToViewDto);
+		if (category.products) {
+			categoryViewDto.products = category.products.map(
+				this.productMapperProvider.productToViewDto
+			);
 		}
 
 		return categoryViewDto;

@@ -8,11 +8,7 @@ import { AuthModule } from 'src/auth/auth.module';
 import { SecurityModule } from 'src/security/security.module';
 
 @Module({
-	imports: [
-		DatabaseModule,
-		forwardRef(() => AuthModule),
-		SecurityModule
-	],
+	imports: [DatabaseModule, forwardRef(() => AuthModule), SecurityModule],
 	controllers: [UsersController],
 	providers: [UsersService, UserMapperProvider],
 	exports: [UsersService, UserMapperProvider],

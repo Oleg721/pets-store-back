@@ -1,7 +1,4 @@
-import {
-	Inject,
-	Injectable,
-} from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { BaseCrudService } from 'src/common/services/baseCrud.service';
 import { Repository } from 'typeorm';
 import { AttributeName } from 'src/entities';

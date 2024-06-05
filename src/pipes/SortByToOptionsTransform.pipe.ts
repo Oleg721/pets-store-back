@@ -9,5 +9,5 @@ export class SortByToOptionsTransform implements PipeTransform {
 }
 
 const getSortByValue = (data) => {
-	return data.desc ? 'desc' : 'asc'
+	return data.desc ? 'desc' : 'asc';
 };

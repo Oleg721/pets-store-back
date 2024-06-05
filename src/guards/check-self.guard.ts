@@ -14,13 +14,18 @@ export class CheckSelfGuard implements CanActivate {
 		const request = context.switchToHttp().getRequest();
 		const currentUserId = request.user.id;
 
-		const paramKey = this.reflector.get<string>('checkSelf', context.getHandler());
+		const paramKey = this.reflector.get<string>(
+			'checkSelf',
+			context.getHandler()
+		);
 
 		if (paramKey) {
 			const paramValue = request.params[paramKey];
 
 			if (currentUserId != paramValue) {
-				throw new ForbiddenException('You cannot perform this action on yourself.');
+				throw new ForbiddenException(
+					'You cannot perform this action on yourself.'
+				);
 			}
 		}
 

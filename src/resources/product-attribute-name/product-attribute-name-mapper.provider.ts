@@ -60,10 +60,10 @@ export class ProductAttrNameMapperProvider {
 		data: MaxAndMinRawResultType[],
 		type: TypeEnum.DATE | TypeEnum.NUMBER
 	): ProductAttributeValuesViewDto[] {
-		return data.map(({name, min_value, max_value}) => ({
+		return data.map(({ name, min_value, max_value }) => ({
 			name,
 			type: type,
-			values: [min_value, max_value]
+			values: [min_value, max_value],
 		}));
 	}
 }

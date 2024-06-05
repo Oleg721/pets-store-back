@@ -23,6 +23,6 @@ import { JwtStrategy } from 'src/strategies/jwtStrategy';
 	// JWT strategy extracts and attaches the user to the req
 	providers: [AuthService, JwtStrategy],
 	controllers: [AuthController],
-	exports: [AuthService]
+	exports: [AuthService],
 })
 export class AuthModule {}

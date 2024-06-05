@@ -5,9 +5,9 @@ import { DatabaseModule } from 'src/database/database.module';
 import { ProductAttrNameMapperProvider } from './product-attribute-name-mapper.provider';
 
 @Module({
-  imports: [DatabaseModule],
-  controllers: [ProductAttributeNameController],
-  providers: [ProductAttributeNameService, ProductAttrNameMapperProvider],
-  exports: [ProductAttributeNameService, ProductAttrNameMapperProvider]
+	imports: [DatabaseModule],
+	controllers: [ProductAttributeNameController],
+	providers: [ProductAttributeNameService, ProductAttrNameMapperProvider],
+	exports: [ProductAttributeNameService, ProductAttrNameMapperProvider],
 })
 export class ProductAttributeNameModule {}
