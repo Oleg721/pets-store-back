@@ -4,7 +4,6 @@ import { Category, CategoryAttribute } from 'src/entities';
 import { CreateViewDto } from './dto/view-category.dto';
 import { PaginationResult } from 'src/common/dto/pagination.dto';
 import { ProductMapperProvider } from '../product/productMapper.provider';
-import { TypeEnum } from 'src/entities/attributeName.entity';
 
 const transformCategoryAttributes = (
 	categoryAttributes: CategoryAttribute[]

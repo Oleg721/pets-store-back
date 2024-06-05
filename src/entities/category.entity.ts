@@ -19,10 +19,10 @@ export class Category extends BaseEntity {
 	})
 	parentId: number;
 
-	@ManyToOne((type) => Category, (category) => category.children)
+	@ManyToOne(() => Category, (category) => category.children)
 	parent: Category;
 
-	@OneToMany((type) => Category, (category) => category.parent)
+	@OneToMany(() => Category, (category) => category.parent)
 	children: Category[];
 
 	@OneToMany(() => Product, (product) => product.category)

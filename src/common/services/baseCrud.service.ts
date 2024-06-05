@@ -31,6 +31,7 @@ export abstract class BaseCrudService<
 	): Promise<TEntity> {
 		const entity = await this._repository.findOneBy({
 			id,
+			...option,
 		} as FindOptionsWhere<TEntity>);
 
 		if (!entity) throw new NotFoundException(`Entity with ID ${id} not found`);

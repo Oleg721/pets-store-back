@@ -3,7 +3,6 @@ import { ProductService } from './product.service';
 import { ProductController } from './product.controller';
 import { DatabaseModule } from 'src/database/database.module';
 import { ProductMapperProvider } from './productMapper.provider';
-import { AttributeNameModule } from '../attribute-name/attribute-name.module';
 import { ProductAttributeNameModule } from '../product-attribute-name/product-attribute-name.module';
 import { CategoryAttributeModule } from '../category-attribute/category-attribute.module';
 import { CategoryModule } from '../category/category.module';

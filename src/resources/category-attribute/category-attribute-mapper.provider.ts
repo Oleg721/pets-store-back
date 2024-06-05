@@ -1,10 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import {
-	AttributeName,
-	CategoryAttribute,
-	Product,
-	ProductAttributeName,
-} from 'src/entities';
+import { CategoryAttribute } from 'src/entities';
 import { CategoryNameViewDto } from './dto/view-category-attribute.dto';
 
 @Injectable()
