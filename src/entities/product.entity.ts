@@ -3,6 +3,7 @@ import { Entity, Column, ManyToOne, OneToMany, JoinTable } from 'typeorm';
 import { BaseEntity } from './base.entity';
 import { Category } from './category.entity';
 import { ProductAttributeName } from './productAttributeName.entity';
+import { WarehouseStock } from './warehouseStock.entity';
 
 export enum ProductStatus {
 	AVAILABLE = 'available',
@@ -47,6 +48,6 @@ export class Product extends BaseEntity {
 	)
 	productAttributeNames: ProductAttributeName[];
 
-	// @JoinTable()
-	// categories: Category[]
+	@OneToMany(() => WarehouseStock, warehouseStock => warehouseStock.warehouse)
+	public warehouseStocks: WarehouseStock[];
 }
