@@ -1,7 +1,9 @@
 import {
+	Inject,
 	Injectable,
 	NotFoundException,
 	UnauthorizedException,
+	forwardRef,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
@@ -11,28 +13,31 @@ import { UsersService } from 'src/resources/user/users.service';
 import { SecurityService } from 'src/security/security.service';
 import { LoginDto, RegisterDto } from './dto/auth.dto';
 import { Role } from 'src/entities/user.entity';
+import { UserMapperProvider } from 'src/resources/user/userMapper.provider';
 
 @Injectable()
 export class AuthService {
 	constructor(
 		private readonly jwtService: JwtService,
 		private readonly config: ConfigService,
+		@Inject(forwardRef(() => UsersService))
 		private readonly userService: UsersService,
-		private readonly securityService: SecurityService,
+		private readonly userMapperProvider: UserMapperProvider,
+		private readonly securityService: SecurityService
 	) {}
 
 	async login(dto: LoginDto) {
-		const { hashedpassword, ...rest } = await this.validateUser(dto);
+		const user = await this.validateUser(dto);
 
-		const tokens = await this.generateTokenPair(rest);
-
-		return { ...tokens };
+		return this.generateTokenPair(user);
 	}
 
 	async generateTokenPair(user: User) {
 		// Fix "Issued At claim is invalid" error
+		const userView = this.userMapperProvider.userToViewDto(user);
+
 		const issuedAt = Math.floor(Date.now() / 1000) - 60;
-		const payload = { sub: user.id, user: user, iat: issuedAt };
+		const payload = { sub: userView.id, user: userView, iat: issuedAt };
 
 		const refreshToken = await this.jwtService.signAsync(payload, {
 			secret: this.config.get<string>('SECRET_REFRESH_TOKEN'),

@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, forwardRef } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { ConfigModule } from '@nestjs/config';
@@ -12,7 +12,7 @@ import { JwtStrategy } from 'src/strategies/jwtStrategy';
 @Module({
 	imports: [
 		ConfigModule.forRoot(),
-		UsersModule,
+		forwardRef(() => UsersModule),
 		SecurityModule,
 		PassportModule,
 		JwtModule.register({
@@ -23,5 +23,6 @@ import { JwtStrategy } from 'src/strategies/jwtStrategy';
 	// JWT strategy extracts and attaches the user to the req
 	providers: [AuthService, JwtStrategy],
 	controllers: [AuthController],
+	exports: [AuthService]
 })
 export class AuthModule {}
