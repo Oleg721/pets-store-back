@@ -3,7 +3,7 @@ import { Check, Column, CreateDateColumn, DeleteDateColumn, Entity, ManyToOne, P
 import { Product } from './product.entity';
 import { Warehouse } from './warehouse.entity';
 
-@Entity('warehouseStocks')
+@Entity('WarehouseStocks')
 @Check(`"quantity" >= 0`)
 export class WarehouseStock {
 	@Column({
