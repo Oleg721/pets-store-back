@@ -92,9 +92,6 @@ const getRawQueryByAttribute = (filter) => {
 			const isValidValue =
 				!from || !to || (isValidDate(from) && isValidDate(to));
 
-				console.log('isValidValue: ', isValidValue);
-				
-
 			if (!isValidValue) {
 				return null;
 			}
