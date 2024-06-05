@@ -11,6 +11,7 @@ import { CategoryModule } from './resources/category/category.module';
 import { AttributeNameModule } from './resources/attribute-name/attribute-name.module';
 import { CategoryAttributeModule } from './resources/category-attribute/category-attribute.module';
 import { ProductAttributeNameModule } from './resources/product-attribute-name/product-attribute-name.module';
+import { WarehouseModule } from './resources/warehouse/warehouse.module';
 
 @Module({
 	imports: [
@@ -27,6 +28,7 @@ import { ProductAttributeNameModule } from './resources/product-attribute-name/p
 		AttributeNameModule,
 		CategoryAttributeModule,
 		ProductAttributeNameModule,
+		WarehouseModule,
 	],
 	controllers: [AppController],
 	providers: [AppService],
