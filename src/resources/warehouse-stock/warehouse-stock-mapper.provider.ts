@@ -4,7 +4,6 @@ import { PaginationResult } from '../../common/dto/pagination.dto';
 import { WarehouseStock } from 'src/entities';
 import { WarehouseStockViewDto } from './dto/view-warehouse-stock.dto';
 
-
 @Injectable()
 export class WarehouseStockMapperProvider {
 	entityToViewPaginationDto(

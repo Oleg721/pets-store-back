@@ -1,4 +1,13 @@
-import { Check, Column, CreateDateColumn, DeleteDateColumn, Entity, ManyToOne, PrimaryColumn, UpdateDateColumn } from 'typeorm';
+import {
+	Check,
+	Column,
+	CreateDateColumn,
+	DeleteDateColumn,
+	Entity,
+	ManyToOne,
+	PrimaryColumn,
+	UpdateDateColumn,
+} from 'typeorm';
 
 import { Product } from './product.entity';
 import { Warehouse } from './warehouse.entity';
@@ -9,7 +18,7 @@ export class WarehouseStock {
 	@Column({
 		default: 0,
 		nullable: false,
-		type: "int"
+		type: 'int',
 	})
 	quantity: number;
 
@@ -20,20 +29,17 @@ export class WarehouseStock {
 	updatedAt: Date;
 
 	@DeleteDateColumn()
-    deletedAt: Date | null;
+	deletedAt: Date | null;
 
 	@PrimaryColumn()
 	productId: number;
 
 	@PrimaryColumn()
-	warehouseId: number
+	warehouseId: number;
 
 	@ManyToOne(() => Warehouse, (warehouse) => warehouse.warehouseStocks)
 	warehouse: Warehouse;
 
-	@ManyToOne(
-		() => Product,
-		(product) => product.warehouseStocks
-	)
+	@ManyToOne(() => Product, (product) => product.warehouseStocks)
 	product: Product;
 }

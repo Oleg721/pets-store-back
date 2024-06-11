@@ -13,7 +13,6 @@ import { UpdateWarehouseDto } from './dto/update-warehouse.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { WarehouseMapperProvider } from './warehouse-mapper.provider';
 
-
 @ApiTags('warehouses')
 @Controller('warehouse')
 export class WarehouseController {
@@ -37,7 +36,7 @@ export class WarehouseController {
 	@Get(':id')
 	async findOne(@Param('id') id: string) {
 		const result = await this.warehouseService.findOne(+id);
-    return this.mapper.entityToViewDto(result);
+		return this.mapper.entityToViewDto(result);
 	}
 
 	@Patch(':id')

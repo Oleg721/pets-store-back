@@ -1,7 +1,5 @@
 import { Injectable } from '@nestjs/common';
 
-
-
 import { PaginationResult } from '../../common/dto/pagination.dto';
 import { WarehouseViewDto } from './dto/view-warehouse.dto';
 import { Warehouse } from 'src/entities';
@@ -29,7 +27,6 @@ export class WarehouseMapperProvider {
 
 		viewDto.id = attributeName.id;
 		viewDto.name = attributeName.name;
-
 
 		return viewDto;
 	}

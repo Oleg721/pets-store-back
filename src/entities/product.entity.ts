@@ -48,6 +48,6 @@ export class Product extends BaseEntity {
 	)
 	productAttributeNames: ProductAttributeName[];
 
-	@OneToMany(() => WarehouseStock, warehouseStock => warehouseStock.warehouse)
+	@OneToMany(() => WarehouseStock, (warehouseStock) => warehouseStock.warehouse)
 	public warehouseStocks: WarehouseStock[];
 }

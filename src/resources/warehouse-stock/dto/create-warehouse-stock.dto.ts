@@ -1,13 +1,12 @@
-import { ApiProperty } from "@nestjs/swagger";
+import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateWarehouseStockDto {
-    @ApiProperty()
+	@ApiProperty()
 	productId: number;
-    @ApiProperty()
+	@ApiProperty()
 	warehouseId: number;
-    @ApiProperty({
-        minimum: 1,
-        
-    })
-    quantity: number;
+	@ApiProperty({
+		minimum: 1,
+	})
+	quantity: number;
 }

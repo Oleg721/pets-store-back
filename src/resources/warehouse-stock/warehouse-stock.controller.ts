@@ -1,13 +1,4 @@
-import {
-	Controller,
-	Get,
-	Post,
-	Body,
-	Patch,
-	Param,
-	Delete,
-	ParseIntPipe,
-} from '@nestjs/common';
+import { Controller, Get, Param, ParseIntPipe } from '@nestjs/common';
 import { WarehouseStockService } from './warehouse-stock.service';
 import { ApiQuery, ApiTags } from '@nestjs/swagger';
 import { WarehouseStockMapperProvider } from './warehouse-stock-mapper.provider';
